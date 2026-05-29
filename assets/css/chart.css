@@ -1,0 +1,45 @@
+#chart-svg { position: absolute; top: 0; left: 0; overflow: visible; }
+#overlay { position: absolute; top: 0; left: 0; }
+
+#world {
+  background:
+    repeating-linear-gradient(90deg, transparent 0 199px, rgba(107,91,75,.07) 199px 200px),
+    linear-gradient(135deg, #f5e6c8, #eedcb5 25%, #f0e2c4 50%, #e8d5a8 75%, #f2e4c0);
+  border: 3px solid var(--border-ornate);
+  box-shadow: inset 0 0 80px rgba(42,31,20,.15);
+}
+
+.century-line { stroke: rgba(42,31,20,.13); stroke-width: 1; }
+.century-line.major { stroke: rgba(42,31,20,.22); stroke-width: 2; }
+
+.century-label {
+  position: absolute; transform: translateX(-50%);
+  font-family: var(--font-display); font-size: 11px; font-weight: 700;
+  color: var(--ink-light); white-space: nowrap; pointer-events: none;
+  text-shadow: 1px 1px 2px rgba(240,226,196,.9);
+}
+.century-label.major { font-size: 13px; color: var(--red-accent); }
+
+.era-banner {
+  position: absolute; top: 30px; height: 22px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-display); font-size: 10px; font-weight: 700;
+  letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,.95);
+  text-shadow: 0 1px 2px rgba(0,0,0,.5); pointer-events: none;
+  border: 1px solid rgba(255,255,255,.15); border-radius: 3px;
+}
+
+.region-label {
+  position: absolute; left: 6px;
+  font-family: var(--font-display); font-size: 11px; font-weight: 900;
+  letter-spacing: 3px; text-transform: uppercase; color: var(--ink-faint);
+  writing-mode: vertical-rl; transform: rotate(180deg); pointer-events: none;
+}
+
+/* Banda temporal (simple, sustituida por ríos en Task 6) */
+.civ-band { position: absolute; border-radius: 4px; cursor: pointer; }
+.civ-label {
+  position: absolute; font-family: var(--font-label); font-size: 11px; font-weight: 600;
+  color: rgba(255,255,255,.96); text-shadow: 0 1px 3px rgba(0,0,0,.7);
+  white-space: nowrap; pointer-events: none; transform: translateY(-50%);
+}
