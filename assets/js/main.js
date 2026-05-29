@@ -6,6 +6,7 @@ import { createViewport } from './core/viewport.js';
 import { renderTimeline } from './render/timeline.js';
 import { riverPath, connectorPath } from './render/rivers.js';
 import { showTooltip, moveTooltip, hideTooltip } from './ui/tooltip.js';
+import { initPanel, openPanel } from './ui/panel.js';
 
 const world = document.getElementById('world');
 const svg = document.getElementById('chart-svg');
@@ -53,6 +54,7 @@ CIVS.forEach(civ => {
   fill.addEventListener('mouseenter', e => showTooltip(e, civ));
   fill.addEventListener('mousemove', moveTooltip);
   fill.addEventListener('mouseleave', hideTooltip);
+  fill.addEventListener('click', () => openPanel(civ));
   svg.appendChild(fill);
 
   const shade = document.createElementNS(SVGNS, 'path');
@@ -90,6 +92,9 @@ app.addEventListener('wheel', e => {
   const r = app.getBoundingClientRect();
   vp.zoomAt(e.deltaY > 0 ? 0.9 : 1.1, e.clientX - r.left, e.clientY - r.top);
 }, { passive: false });
+
+// Panel lateral (la navegación a civ se reemplaza por goToCiv en Task 11)
+initPanel(id => openPanel(byId[id]));
 
 document.getElementById('version-badge').textContent = 'v' + VERSION;
 
