@@ -4,7 +4,7 @@ import { CIVS } from './data/civilizations.js';
 import { layout, yearToX, CHART_WIDTH } from './core/coords.js';
 import { createViewport } from './core/viewport.js';
 import { renderTimeline } from './render/timeline.js';
-import { riverPath } from './render/rivers.js';
+import { riverPath, connectorPath } from './render/rivers.js';
 
 const world = document.getElementById('world');
 const svg = document.getElementById('chart-svg');
@@ -30,6 +30,16 @@ defs.innerHTML = `<linearGradient id="riverShade" x1="0" y1="0" x2="0" y2="1">
 svg.appendChild(defs);
 
 const brightColors = ['#d4a843','#f1c40f','#f39c12','#ff8c00','#daa520','#cd853f','#c2955a'];
+
+// Conectores de división/fusión (se dibujan primero → quedan detrás de los ríos)
+const byId = Object.fromEntries(CIVS.map(c => [c.id, c]));
+CIVS.filter(c => c.parent && byId[c.parent]).forEach(child => {
+  const conn = document.createElementNS(SVGNS, 'path');
+  conn.setAttribute('d', connectorPath(byId[child.parent], child));
+  conn.setAttribute('class', 'river-connector');
+  conn.setAttribute('fill', child.color);
+  svg.appendChild(conn);
+});
 
 // Ríos orgánicos afilados (SVG) + etiqueta (overlay)
 CIVS.forEach(civ => {
@@ -80,4 +90,4 @@ app.addEventListener('wheel', e => {
 document.getElementById('version-badge').textContent = 'v' + VERSION;
 
 // Exponer para depurar / siguientes tareas
-window.CRONO = { vp, REGIONS, CIVS, totalHeight };
+window.CRONO = { vp, REGIONS, CIVS, byId, totalHeight };

@@ -37,6 +37,7 @@
 }
 
 /* Ríos */
+.river-connector { opacity: .45; pointer-events: none; }
 .river { cursor: pointer; transition: filter .18s; }
 .river:hover { filter: brightness(1.12) saturate(1.15); }
 .civ-label {
