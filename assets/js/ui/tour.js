@@ -1,6 +1,7 @@
 import { TOUR } from '../data/tour.js';
 import { EVENTS } from '../data/events.js';
-import { REGIONS } from '../data/regions.js';
+import { LAYERS } from '../data/layers.js';
+import { regionById } from '../data/regions.js';
 import { yearToX } from '../core/coords.js';
 
 // Resuelve el punto de mundo (x,y) a enfocar para un hito.
@@ -8,30 +9,55 @@ function focusPoint(stop, byId) {
   const f = stop.focus;
   if (f.civId) { const c = byId[f.civId]; return { x: (yearToX(c.start)+yearToX(c.end))/2, y: c.yCenter }; }
   if (f.eventName) {
-    const ev = EVENTS.find(e => e.name === f.eventName); const r = REGIONS[ev.region];
-    return { x: yearToX(ev.year), y: r.yStart + 40 };
+    const ev = EVENTS.find(e => e.name === f.eventName); if (ev) { const r = regionById(ev.region); return { x: yearToX(ev.year), y: r.yStart + 40 }; }
   }
-  const r = REGIONS[f.region] || REGIONS[0];
+  const r = regionById(f.region);
   return { x: yearToX(f.year), y: r.yStart + 60 };
 }
 
-export function initTour(vp, byId) {
-  let active = false, idx = 0;
+// Toma n elementos repartidos uniformemente.
+function spread(arr, n) {
+  if (arr.length <= n) return arr;
+  const out = [], step = arr.length / n;
+  for (let i = 0; i < n; i++) out.push(arr[Math.floor(i * step)]);
+  return out;
+}
+
+// Construye los hitos del recorrido según las capas activas:
+// - todas las capas → recorrido global curado (TOUR).
+// - una capa/preset → se genera a partir de sus eventos (cronológico, ~12 paradas).
+function stopsFor(active) {
+  if (active.size >= LAYERS.length) return TOUR;
+  const evs = EVENTS.filter(e => active.has(e.layer)).sort((a, b) => a.year - b.year);
+  if (evs.length < 2) return TOUR;
+  return spread(evs, 12).map(ev => ({
+    title: ev.name,
+    caption: ev.desc || 'Explora este hito en el mapa. Fuente: Wikipedia.',
+    focus: { eventName: ev.name },
+    zoom: 1.7,
+  }));
+}
+
+export function initTour(vp, byId, getActive) {
+  let active = false, idx = 0, stops = TOUR;
   const rail = document.getElementById('tour-rail');
   const card = document.getElementById('tour-card');
 
   function goto(i) {
-    idx = Math.max(0, Math.min(TOUR.length - 1, i));
-    const stop = TOUR[idx];
+    idx = Math.max(0, Math.min(stops.length - 1, i));
+    const stop = stops[idx];
     const p = focusPoint(stop, byId);
     vp.animateTo({ x: innerWidth/2 - p.x * stop.zoom, y: innerHeight/2 - p.y * stop.zoom, scale: stop.zoom });
     card.querySelector('.tour-title').textContent = stop.title;
     card.querySelector('.tour-caption').textContent = stop.caption;
-    card.querySelector('.tour-progress').textContent = `${idx + 1} / ${TOUR.length}`;
+    card.querySelector('.tour-progress').textContent = `${idx + 1} / ${stops.length}`;
     card.querySelector('[data-tour="prev"]').disabled = idx === 0;
-    card.querySelector('[data-tour="next"]').disabled = idx === TOUR.length - 1;
+    card.querySelector('[data-tour="next"]').disabled = idx === stops.length - 1;
   }
-  function start() { active = true; rail.classList.add('active'); goto(0); }
+  function start() {
+    stops = stopsFor(getActive ? getActive() : new Set(LAYERS.map(l => l.id)));
+    active = true; rail.classList.add('active'); goto(0);
+  }
   function stop() { active = false; rail.classList.remove('active'); }
 
   card.addEventListener('click', e => {
@@ -40,8 +66,6 @@ export function initTour(vp, byId) {
     if (a === 'prev') goto(idx - 1);
     if (a === 'close') stop();
   });
-
-  // rueda del ratón avanza/retrocede hitos cuando el tour está activo
   let lock = false;
   addEventListener('wheel', e => {
     if (!active) return;
@@ -49,7 +73,6 @@ export function initTour(vp, byId) {
     if (lock) return; lock = true; setTimeout(() => lock = false, 700);
     goto(idx + (e.deltaY > 0 ? 1 : -1));
   }, { capture: true });
-
   document.addEventListener('keydown', e => {
     if (!active) return;
     if (e.key === 'ArrowRight') goto(idx + 1);

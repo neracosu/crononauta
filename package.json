@@ -1,6 +1,6 @@
 {
   "name": "crononauta",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Atlas interactivo de la historia mundial — recreación de la Adams' Synchronological Chart (1871).",
   "type": "module",
   "private": true,

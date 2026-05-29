@@ -147,15 +147,18 @@ initSearch(controls.goToCiv);
 initLegend(controls.goToCiv);
 initMinimap(vp, totalHeight);
 
-const tour = initTour(vp, byId);
-initSplash(() => controls.reset(), () => tour.start());
-
-// Capas: muestra/oculta todo elemento [data-layer] según el conjunto activo
+// Capas: estado activo + visibilidad. El tour se construye según las capas activas.
+let activeLayers = new Set();
+const getActive = () => activeLayers;
 function applyLayers(active) {
+  activeLayers = active;
   overlay.parentNode.querySelectorAll('[data-layer]').forEach(el => {
     el.style.display = active.has(el.dataset.layer) ? '' : 'none';
   });
 }
+
+const tour = initTour(vp, byId, getActive);
+initSplash(() => controls.reset(), () => tour.start());
 initLayers(applyLayers);
 
 document.getElementById('version-badge').textContent = 'v' + VERSION;

@@ -6,6 +6,14 @@ Lo más reciente arriba.
 
 ## [Sin publicar]
 
+## [1.2.1] - 2026-05-29
+
+### Cambiado
+- El panel de capas (toggles ambiguos) se reemplaza por un **selector desplegable** con
+  perfiles (Todo, Fe/Bíblica, Medicina, Ciencia y tecnología, Guerras…) + capas sueltas.
+- **El Recorrido se adapta a la capa seleccionada**: con "Todo" corre el tour global curado;
+  con una capa/perfil, se genera un recorrido cronológico con sus hitos.
+
 ## [1.2.0] - 2026-05-29
 
 ### Plataforma multicapa — backend + capas (Fases 0 y 1 del rediseño v2)

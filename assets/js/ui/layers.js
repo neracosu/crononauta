@@ -1,61 +1,51 @@
-import { LAYERS, PRESETS } from '../data/layers.js';
+import { LAYERS, PRESETS, layerById } from '../data/layers.js';
 
-// Panel de capas: multi-toggle + "solo esta capa" (foco) + presets + estado en URL.
-// apply(activeSet) muestra/oculta los elementos del mapa por capa.
+// Selector desplegable de capas: perfiles (presets) + capas individuales.
+// apply(activeSet) muestra/oculta los elementos del mapa por capa. Estado en la URL.
 export function initLayers(apply) {
   const allIds = LAYERS.map(l => l.id);
-  let active = new Set(fromURL() || allIds);
+  const sel = document.getElementById('layer-select');
 
-  const panel = document.getElementById('layers-panel');
-  const toggleBtn = document.getElementById('layers-toggle');
-  toggleBtn.addEventListener('click', () => panel.classList.toggle('open'));
+  sel.innerHTML =
+    `<optgroup label="Perfiles">` +
+      PRESETS.map(p => `<option value="preset:${p.id}">${p.label}</option>`).join('') +
+    `</optgroup><optgroup label="Capas">` +
+      LAYERS.map(l => `<option value="layer:${l.id}">${l.icon || ''} ${l.name}</option>`).join('') +
+    `</optgroup>`;
 
-  build();
-  syncURL();
-  apply(active);
-  if (innerWidth > 760) panel.classList.add('open'); // abierto por defecto en escritorio
-
+  function idsFor(value) {
+    const [kind, id] = value.split(':');
+    if (kind === 'preset') return (PRESETS.find(p => p.id === id)?.layers) || allIds;
+    return [id];
+  }
   function fromURL() {
     const p = new URLSearchParams(location.search);
-    if (p.get('preset')) {
-      const pr = PRESETS.find(x => x.id === p.get('preset'));
-      if (pr) return pr.layers;
-    }
-    if (p.get('capas')) return p.get('capas').split(',').filter(Boolean);
-    return null;
+    if (p.get('preset') && PRESETS.some(x => x.id === p.get('preset'))) return `preset:${p.get('preset')}`;
+    if (p.get('capa') && allIds.includes(p.get('capa'))) return `layer:${p.get('capa')}`;
+    return 'preset:todo';
   }
-  function syncURL() {
+  function syncURL(value) {
     const p = new URLSearchParams(location.search);
-    p.delete('preset');
-    if (active.size === allIds.length) p.delete('capas');
-    else p.set('capas', [...active].join(','));
+    p.delete('preset'); p.delete('capa'); p.delete('capas');
+    const [kind, id] = value.split(':');
+    if (kind === 'preset' && id !== 'todo') p.set('preset', id);
+    if (kind === 'layer') p.set('capa', id);
     const qs = p.toString();
     history.replaceState(null, '', location.pathname + (qs ? '?' + qs : ''));
   }
-  function set(ids) { active = new Set(ids); build(); syncURL(); apply(active); }
-  function toggle(id) {
-    active.has(id) ? active.delete(id) : active.add(id);
-    if (!active.size) active = new Set(allIds);
-    set([...active]);
-  }
 
-  function build() {
-    panel.innerHTML =
-      `<div class="layers-head"><span>Capas</span><button class="layers-all" data-all>Todas</button></div>` +
-      LAYERS.map(l => `<div class="layer-row${active.has(l.id) ? ' on' : ''}" data-id="${l.id}">
-        <span class="layer-sw" style="background:${l.color}">${l.icon || ''}</span>
-        <span class="layer-name">${l.name}</span>
-        <button class="layer-only" data-only="${l.id}" title="Ver solo esta capa">◉</button>
-      </div>`).join('');
+  const initial = fromURL();
+  sel.value = initial;
+  apply(new Set(idsFor(initial)));
 
-    panel.querySelector('[data-all]').addEventListener('click', () => set(allIds));
-    panel.querySelectorAll('.layer-row').forEach(row => {
-      row.addEventListener('click', e => {
-        if (e.target.closest('[data-only]')) return;
-        toggle(row.dataset.id);
-      });
-    });
-    panel.querySelectorAll('[data-only]').forEach(b =>
-      b.addEventListener('click', e => { e.stopPropagation(); set([b.dataset.only]); }));
-  }
+  sel.addEventListener('change', () => {
+    syncURL(sel.value);
+    apply(new Set(idsFor(sel.value)));
+  });
+}
+
+// Color de acento de la capa actualmente seleccionada (para teñir el botón del tour, etc.)
+export function accentFor(active) {
+  const ids = [...active];
+  return ids.length === 1 ? layerById(ids[0]).color : null;
 }
