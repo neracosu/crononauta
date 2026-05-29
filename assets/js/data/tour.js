@@ -1,0 +1,23 @@
+// focus: { civId } | { year, region } | { eventName }. zoom: nivel objetivo.
+export const TOUR = [
+  { id:'inicio', title:'El amanecer de la historia', zoom:0.7, focus:{ year:-3500, region:0 },
+    caption:'Hace ~6000 años, en Mesopotamia y Egipto, nacen las primeras grandes civilizaciones.' },
+  { id:'egipto', title:'Egipto eterno', zoom:1.5, focus:{ civId:'egypt' },
+    caption:'Tres mil años de faraones, pirámides y jeroglíficos junto al Nilo.' },
+  { id:'grecia', title:'La Grecia clásica', zoom:1.6, focus:{ civId:'greece' },
+    caption:'Democracia, filosofía y teatro: las raíces del pensamiento occidental.' },
+  { id:'roma', title:'Roma, de aldea a imperio', zoom:1.4, focus:{ civId:'rome' },
+    caption:'Más de mil años que moldearon el derecho, la lengua y la ciudad.' },
+  { id:'cristo', title:'Un punto de quiebre', zoom:1.8, focus:{ eventName:'Inicio de la Era Cristiana' },
+    caption:'El año que parte en dos la cronología tradicional de Occidente.' },
+  { id:'islam', title:'La Edad de Oro del Islam', zoom:1.4, focus:{ civId:'caliphate' },
+    caption:'De Córdoba a Bagdad: álgebra, medicina y astronomía florecen.' },
+  { id:'mongoles', title:'El mayor imperio terrestre', zoom:1.6, focus:{ civId:'mongol' },
+    caption:'Gengis Kan y la Pax Mongolica reconectan Oriente y Occidente.' },
+  { id:'america', title:'1492: dos mundos se encuentran', zoom:1.8, focus:{ eventName:'Descubrimiento de América' },
+    caption:'El viaje de Colón inicia el intercambio que cambió el planeta.' },
+  { id:'revolucion', title:'La era de las revoluciones', zoom:1.6, focus:{ eventName:'Revolución Francesa' },
+    caption:'Independencias y revoluciones redibujan el poder y los derechos.' },
+  { id:'moderno', title:'El mundo contemporáneo', zoom:0.8, focus:{ year:1900, region:5 },
+    caption:'Industria, naciones modernas y el umbral del siglo XX.' },
+];

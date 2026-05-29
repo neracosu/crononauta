@@ -12,6 +12,7 @@ import { initControls } from './ui/controls.js';
 import { initSearch } from './ui/search.js';
 import { initLegend } from './ui/legend.js';
 import { initMinimap } from './render/minimap.js';
+import { initTour } from './ui/tour.js';
 
 const world = document.getElementById('world');
 const svg = document.getElementById('chart-svg');
@@ -107,7 +108,9 @@ initSearch(controls.goToCiv);
 initLegend(controls.goToCiv);
 initMinimap(vp, totalHeight);
 
+const tour = initTour(vp, byId);
+
 document.getElementById('version-badge').textContent = 'v' + VERSION;
 
 // Exponer para depurar / siguientes tareas
-window.CRONO = { vp, REGIONS, CIVS, byId, totalHeight, controls, goToCiv: controls.goToCiv };
+window.CRONO = { vp, REGIONS, CIVS, byId, totalHeight, controls, goToCiv: controls.goToCiv, startTour: tour.start };
