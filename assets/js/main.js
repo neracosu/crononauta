@@ -7,6 +7,7 @@ import { renderTimeline } from './render/timeline.js';
 import { riverPath, connectorPath } from './render/rivers.js';
 import { showTooltip, moveTooltip, hideTooltip } from './ui/tooltip.js';
 import { initPanel, openPanel } from './ui/panel.js';
+import { renderMarkers } from './render/markers.js';
 
 const world = document.getElementById('world');
 const svg = document.getElementById('chart-svg');
@@ -70,6 +71,8 @@ CIVS.forEach(civ => {
   lab.textContent = civ.name;
   overlay.appendChild(lab);
 });
+
+renderMarkers(overlay);
 
 // Viewport + interacción
 const vp = createViewport(world);

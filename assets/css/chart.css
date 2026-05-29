@@ -46,3 +46,10 @@
   white-space: nowrap; pointer-events: none; transform: translateY(-50%);
 }
 .civ-label.dark { color: rgba(0,0,0,.82); text-shadow: 0 1px 2px rgba(255,255,255,.5); }
+
+/* Marcadores de evento */
+.event-marker { position: absolute; width: 9px; height: 9px; border-radius: 50%;
+  background: var(--red-accent); border: 1.5px solid var(--gold); cursor: pointer; z-index: 8;
+  transform: translate(-50%,-50%); transition: transform .18s, box-shadow .18s; }
+.event-marker:hover { transform: translate(-50%,-50%) scale(2); box-shadow: 0 0 12px rgba(139,26,26,.6); z-index: 20; }
+.event-marker.golden { background: var(--gold); border-color: var(--gold-light); width: 11px; height: 11px; }
