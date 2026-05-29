@@ -102,6 +102,33 @@ app.addEventListener('wheel', e => {
   vp.zoomAt(e.deltaY > 0 ? 0.9 : 1.1, e.clientX - r.left, e.clientY - r.top);
 }, { passive: false });
 
+// Gestos táctiles: 1 dedo = pan, 2 dedos = pinch-zoom hacia el punto medio
+const dist = (a, b) => Math.hypot(b.clientX - a.clientX, b.clientY - a.clientY);
+let touch = null;
+app.addEventListener('touchstart', e => {
+  if (e.touches.length === 1) {
+    touch = { mode:'pan', sx:e.touches[0].clientX, sy:e.touches[0].clientY, px:vp.state.x, py:vp.state.y };
+  } else if (e.touches.length === 2) {
+    const [a, b] = e.touches;
+    touch = { mode:'pinch', d:dist(a, b), mx:(a.clientX+b.clientX)/2, my:(a.clientY+b.clientY)/2 };
+  }
+}, { passive: true });
+app.addEventListener('touchmove', e => {
+  if (!touch) return;
+  if (touch.mode === 'pan' && e.touches.length === 1) {
+    vp.set({ x:touch.px+(e.touches[0].clientX-touch.sx), y:touch.py+(e.touches[0].clientY-touch.sy), scale:vp.state.scale });
+  } else if (touch.mode === 'pinch' && e.touches.length === 2) {
+    const [a, b] = e.touches;
+    const nd = dist(a, b), nmx = (a.clientX+b.clientX)/2, nmy = (a.clientY+b.clientY)/2;
+    const r = app.getBoundingClientRect();
+    if (touch.d > 0) vp.zoomAt(nd / touch.d, nmx - r.left, nmy - r.top);
+    vp.panBy(nmx - touch.mx, nmy - touch.my);
+    touch.d = nd; touch.mx = nmx; touch.my = nmy;
+  }
+  e.preventDefault();
+}, { passive: false });
+app.addEventListener('touchend', () => { touch = null; }, { passive: true });
+
 // Controles + navegación + panel
 const controls = initControls(vp, { byId, openPanel, totalHeight, onTour: () => window.CRONO?.startTour?.() });
 initPanel(controls.goToCiv);

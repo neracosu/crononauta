@@ -1,0 +1,23 @@
+@media (max-width: 760px) {
+  .brand span { display: none; }
+  #search-input { width: 130px; } #search-input:focus { width: 170px; }
+  #minimap { display: none; }
+  #legend-panel { width: 200px; max-height: 50vh; }
+
+  /* panel lateral → hoja inferior */
+  #info-panel { top: auto; bottom: -100%; right: 0; left: 0; width: 100%; max-width: 100%;
+    height: 78vh; border-left: none; border-top: 2px solid var(--gold);
+    border-radius: 16px 16px 0 0; transition: bottom .4s var(--ease-soft); }
+  #info-panel.open { right: 0; bottom: 0; }
+  #panel-hero { height: 150px; }
+
+  #controls { bottom: 14px; gap: 6px; padding: 6px 10px; }
+  #controls button { width: 32px; height: 32px; }
+  #tour-rail { padding-bottom: 70px; }
+  #tour-card { padding: 14px 16px; }
+  .tour-title { font-size: 18px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #info-panel, #tour-rail, #splash { transition: none; }
+}
