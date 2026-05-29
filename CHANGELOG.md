@@ -6,6 +6,14 @@ Lo más reciente arriba.
 
 ## [Sin publicar]
 
+### Backend (Fase 0 del rediseño v2 multicapa)
+- **Base de datos propia (MariaDB) + API REST en PHP** en el VPS. Esquema
+  `regiones/capas/civilizaciones/eventos` (con `fuente_url`/`wikidata` para citar).
+- El mapa-río ahora lee los datos de la API (`fetch`) en vez de archivos JS estáticos;
+  los estáticos quedan como respaldo offline. Motor de render/cámara/tour sin cambios.
+- Campo `layer` (capa temática) en eventos y registro de capas (`layers.js`) — base del
+  sistema de capas conmutables.
+
 ## [1.1.0] - 2026-05-29
 
 ### Añadido

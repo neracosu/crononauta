@@ -1,4 +1,5 @@
 import { VERSION } from './data/version.js';
+import { loadData } from './data/load.js';
 import { REGIONS } from './data/regions.js';
 import { CIVS } from './data/civilizations.js';
 import { layout, yearToX, CHART_WIDTH } from './core/coords.js';
@@ -18,6 +19,9 @@ import { initSplash } from './ui/splash.js';
 const world = document.getElementById('world');
 const svg = document.getElementById('chart-svg');
 const overlay = document.getElementById('overlay');
+
+// Datos desde la API (DB). Top-level await (módulo ES). Cae a estáticos si falla.
+await loadData();
 
 const totalHeight = layout(REGIONS, CIVS);
 world.style.width = CHART_WIDTH + 'px';
