@@ -1,0 +1,13 @@
+{
+  "name": "crononauta",
+  "version": "0.1.0",
+  "description": "Atlas interactivo de la historia mundial — recreación de la Adams' Synchronological Chart (1871).",
+  "type": "module",
+  "private": true,
+  "license": "GPL-3.0",
+  "homepage": "https://crononauta.neracosu.com",
+  "repository": { "type": "git", "url": "https://github.com/neracosu/crononauta.git" },
+  "scripts": {
+    "test": "node --test tests/"
+  }
+}
