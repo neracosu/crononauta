@@ -1,5 +1,13 @@
 // region = índice 0..5 donde se ancla el marcador. golden = hito destacado.
 export const EVENTS = [
+  // RELATO BÍBLICO (region 6) — fechas según la cronología de Ussher (como en el mapa de Adams)
+  { year:-4004, name:'La Creación', desc:'Inicio de la cronología bíblica según Ussher: "En el principio creó Dios los cielos y la tierra".', region:6, golden:true },
+  { year:-2348, name:'El Diluvio', desc:'El Diluvio universal. Noé y su familia sobreviven en el arca (1656 Anno Mundi).', region:6, golden:true },
+  { year:-2242, name:'Torre de Babel', desc:'La confusión de las lenguas y la dispersión de los pueblos.', region:6 },
+  { year:-1921, name:'Vocación de Abraham', desc:'Abraham deja Harán hacia Canaán siguiendo la promesa divina.', region:6, golden:true },
+  { year:-1491, name:'El Éxodo de Egipto', desc:'Moisés saca a Israel de Egipto; entrega de la Ley en el Sinaí.', region:6, golden:true },
+  { year:-1012, name:'Templo de Salomón', desc:'Salomón edifica el Primer Templo en Jerusalén.', region:6 },
+
   { year:-3100, name:'Unificación de Egipto', desc:'Narmer/Menes unifica Alto y Bajo Egipto.', region:0 },
   { year:-2560, name:'Gran Pirámide de Guiza', desc:'Construida para el faraón Keops.', region:0 },
   { year:-1754, name:'Código de Hammurabi', desc:'Primer código legal escrito de la historia.', region:0 },

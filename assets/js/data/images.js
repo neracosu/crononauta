@@ -17,6 +17,10 @@ export const CIV_ICONS = {
   viking:'⚔️', indus:'🧱', china_ancient:'🐉', india:'🕉️', japan:'⛩️', mongol:'🏹',
   korea:'🎋', carthage:'⚓', ethiopia:'🗿', ghana:'👑', olmec:'🗿', maya:'🔮', aztec:'☀️',
   inca:'🏔️', netherlands:'🌷', prussia:'🦅', usa:'🗽', italy_unified:'🏟️',
+  // Relato bíblico (patriarcas)
+  adam:'🌱', seth:'📜', enos:'📜', cainan:'📜', mahalaleel:'📜', jared:'📜',
+  enoch:'✨', methuselah:'⏳', lamech:'📜', noah:'🚢', shem:'📜', arphaxad:'📜',
+  eber:'📜', peleg:'🌍', terah:'🐪', abraham:'⭐', isaac:'📜', jacob:'✡️',
 };
 
 export const DEFAULT_ICON = '📜';

@@ -6,6 +6,16 @@ Lo más reciente arriba.
 
 ## [Sin publicar]
 
+## [1.1.0] - 2026-05-29
+
+### Añadido
+- **Capa "Relato Bíblico"** (cronología de Ussher, como en el original de Adams):
+  banda superior con las líneas de vida de 18 patriarcas (Adán→Jacob) y 6 eventos
+  bíblicos dorados (Creación, Diluvio, Babel, Abraham, Éxodo, Templo de Salomón).
+- Modo Recorrido ampliado a 15 hitos, incluyendo el arco bíblico.
+### Cambiado
+- Acceso a regiones por `id` (no por índice), permitiendo añadir capas en cualquier orden.
+
 ## [1.0.0] - 2026-05-29
 
 ### Lanzamiento oficial 🎉

@@ -1,6 +1,27 @@
 // Año negativo = a.C. tier: 1 mayor · 2 media · 3 menor. rise: años de crecimiento (opcional).
 // parent: id de la civ de la que deriva (dibuja conector río).
 export const CIVS = [
+  // RELATO BÍBLICO — patriarcas (region 6). Años según la cronología de Ussher
+  // (la misma que usa el mapa original de Adams). start=nacimiento, end=muerte.
+  { id:'adam', name:'Adán', start:-4004, end:-3074, color:'#8a5a2b', region:6, tier:3, desc:'Primer hombre según el Génesis. Vivió 930 años. Cronología de Ussher (Anno Mundi 1).' },
+  { id:'seth', name:'Set', start:-3874, end:-2962, color:'#96652f', region:6, tier:3, desc:'Tercer hijo de Adán y Eva. Vivió 912 años.' },
+  { id:'enos', name:'Enós', start:-3769, end:-2864, color:'#a0703a', region:6, tier:3, desc:'Hijo de Set. Vivió 905 años. "Entonces se comenzó a invocar el nombre del Señor".' },
+  { id:'cainan', name:'Cainán', start:-3679, end:-2769, color:'#8a6d3b', region:6, tier:3, desc:'Hijo de Enós. Vivió 910 años.' },
+  { id:'mahalaleel', name:'Mahalaleel', start:-3609, end:-2714, color:'#9b7b4a', region:6, tier:3, desc:'Hijo de Cainán. Vivió 895 años.' },
+  { id:'jared', name:'Jared', start:-3544, end:-2582, color:'#7a5c3a', region:6, tier:3, desc:'Hijo de Mahalaleel. Vivió 962 años.' },
+  { id:'enoch', name:'Enoc', start:-3382, end:-3017, color:'#b8860b', region:6, tier:2, desc:'"Caminó con Dios y desapareció, porque Dios se lo llevó". No murió; fue trasladado a los 365 años.' },
+  { id:'methuselah', name:'Matusalén', start:-3317, end:-2348, color:'#8c6239', region:6, tier:3, desc:'El hombre más longevo: 969 años. Murió el año del Diluvio.' },
+  { id:'lamech', name:'Lamec', start:-3130, end:-2353, color:'#9e7c4c', region:6, tier:3, desc:'Padre de Noé. Vivió 777 años.' },
+  { id:'noah', name:'Noé', start:-2948, end:-1998, color:'#b5651d', region:6, tier:2, desc:'Construyó el arca y sobrevivió al Diluvio con su familia. Vivió 950 años.' },
+  { id:'shem', name:'Sem', start:-2446, end:-1846, color:'#a67c52', region:6, tier:3, desc:'Hijo de Noé, antepasado de los pueblos semitas. Vivió 600 años.' },
+  { id:'arphaxad', name:'Arfaxad', start:-2346, end:-1908, color:'#8a6d3b', region:6, tier:3, desc:'Hijo de Sem, nacido dos años después del Diluvio. Vivió 438 años.' },
+  { id:'eber', name:'Éber', start:-2281, end:-1817, color:'#96652f', region:6, tier:3, desc:'Bisnieto de Sem; de su nombre derivaría "hebreo". Vivió 464 años.' },
+  { id:'peleg', name:'Péleg', start:-2247, end:-2008, color:'#7a5c3a', region:6, tier:3, desc:'"En sus días fue repartida la tierra". Vivió 239 años.' },
+  { id:'terah', name:'Taré', start:-2126, end:-1921, color:'#8c6239', region:6, tier:3, desc:'Padre de Abraham. Salió de Ur de los caldeos hacia Harán. Vivió 205 años.' },
+  { id:'abraham', name:'Abraham', start:-1996, end:-1821, color:'#daa520', region:6, tier:1, desc:'Padre de las naciones. Dejó Ur por la promesa divina. Patriarca de judíos, cristianos y musulmanes. Vivió 175 años.' },
+  { id:'isaac', name:'Isaac', start:-1896, end:-1716, color:'#a0703a', region:6, tier:3, desc:'Hijo de la promesa de Abraham y Sara. Vivió 180 años.' },
+  { id:'jacob', name:'Jacob / Israel', start:-1837, end:-1690, color:'#9b6b3c', region:6, tier:2, desc:'Renombrado Israel; padre de las doce tribus. Descendió a Egipto. Vivió 147 años.' },
+
   // MEDIO ORIENTE (region 0)
   { id:'sumer', name:'Sumeria', start:-3500, end:-2000, color:'#c2955a', region:0, tier:2, desc:'Primera civilización conocida. Escritura cuneiforme, la rueda, el sistema sexagesimal. Ciudades-estado como Ur, Uruk y Lagash.' },
   { id:'egypt', name:'Egipto', start:-3100, end:-30, color:'#d4a843', region:0, tier:1, desc:'Una de las civilizaciones más longevas. Pirámides, momificación, jeroglíficos. Faraones como Ramsés II, Tutankamón y Cleopatra.' },
