@@ -6,8 +6,21 @@ Lo más reciente arriba.
 
 ## [Sin publicar]
 
-En desarrollo: rediseño 2.0 (mapa-río interactivo + modo Recorrido). Ver
-`docs/superpowers/plans/2026-05-29-crononauta-redesign.md`.
+Pendiente para v1.0.0: revisión final del dueño y lanzamiento oficial.
+
+## [0.9.0] - 2026-05-29
+
+### Añadido
+- **Rediseño 2.0 funcional**: atlas interactivo donde las civilizaciones fluyen como
+  ríos del tiempo (SVG afilado) sobre un eje de 4004 a.C. a 2026.
+- **Exploración libre**: pan (arrastrar), zoom-al-cursor (rueda) y gestos táctiles
+  (pan/pinch). Motor de cámara propio con interpolación de zoom van Wijk.
+- **Modo Recorrido**: 10 hitos narrados con cámara animada (rueda/flechas/botones).
+- Tooltip con imagen, panel lateral (contemporáneas + eventos del período), búsqueda
+  en vivo, leyenda por región, minimapa, controles y atajos de teclado.
+- 42 civilizaciones, 42 eventos, conectores de división/fusión (p. ej. Roma→Bizancio).
+- Imágenes de Wikimedia Commons (descarga reproducible vía `scripts/download-images.sh`).
+- Splash de inicio, responsive con hoja inferior en móvil, SEO/OpenGraph/JSON-LD.
 
 ## [0.1.0] - 2026-05-29
 
