@@ -31,7 +31,7 @@ Lo que modernizamos: tipografía y jerarquía limpias, movimiento suave, un modo
 | Render de civilizaciones | **Bandas orgánicas afiladas**: nacen finas → crecen → se afinan; conectores bezier para divisiones/fusiones |
 | Rango temporal | 4004 a.C. → **2026** (extendido desde 1900 para sentirse actual) |
 | Semilla de datos | Dataset actual (42 civs / 42 eventos) reestructurado + relaciones río; sin expandir civs en v1 |
-| Stack | **HTML + CSS + JS vanilla con ES modules nativos** (sin build tool), fiel al stack del sitio |
+| Stack | **HTML + CSS + JS vanilla con ES modules nativos, cero dependencias, sin build tool** (Opción A, confirmada tras investigar A/B/C el 2026-05-29). Motor propio de pan/zoom/cámara con interpolación de zoom **van Wijk** (movimiento natural) y gestos táctiles robustos |
 | Despliegue | Incremental en este directorio del VPS; el dueño valida en producción recargando |
 
 ## 3. Concepto de interacción
@@ -232,3 +232,44 @@ Incremental y verificable en producción. Orden sugerido (se detalla en el plan)
 7. Imágenes locales + lazy-load.
 8. Responsive + accesibilidad + meta/SEO.
 9. Pulido y verificación final.
+
+## 16. Decisión de stack — investigación (2026-05-29)
+
+Se investigaron 4 opciones para el render y la navegación: (A) vanilla puro,
+(B) vanilla + d3-zoom vendoreado sin build, (C) Vite + Svelte/Solid + TS, (D) Canvas/WebGL.
+Conclusiones de la investigación:
+- **SVG es el render correcto**: a 60fps hasta ~1.000–2.500 nodos; con ~42 (y cientos a futuro)
+  hay margen de sobra. Da nitidez a cualquier zoom, tooltips/clicks por elemento y accesibilidad.
+- **C (build) se descarta**: la reactividad de un framework aporta poco a un render tipo lienzo y
+  el build sube la barrera de colaboración. **D (WebGL) se descarta** (premature optimization;
+  lección de ChronoZoom, que murió por sobre-ingeniería).
+- La investigación recomendaba **B** (d3-zoom para regalar la cámara del tour y el touch). El dueño
+  eligió **A** (cero dependencias, tecnología propia). Para que A "vuele", el motor propio incorpora:
+  - **Interpolación de zoom van Wijk** en la cámara animada (`core/smoothZoom.js`), para que los
+    viajes del tour se sientan naturales y no un escalado lineal feo.
+  - Gestos táctiles robustos (pan 1 dedo, pinch 2 dedos) probados en móvil.
+- **Datos**: patrón TimelineJS — datos en archivos planos editables, separados del código, con schema
+  documentado en `CONTRIBUTING.md`. Bajo umbral para colaboradores no-programadores.
+
+## 17. Changelog + versionado (SemVer)
+
+Adaptación de la metodología VIP SOFT (changelog + SemVer) a una **app pública sin panel admin**:
+- **Fuente legible**: `CHANGELOG.md` en la raíz del repo, estilo *Keep a Changelog*, entradas nuevas
+  arriba, agrupadas por versión, con tipos Nueva función / Mejora / Corrección / Seguridad.
+- **Versión en código**: `assets/js/data/version.js` exporta `VERSION` (única fuente para la UI).
+- **Badge en la app**: versión `vX.Y.Z` visible en el footer/header.
+- **SemVer**: arranca en `v0.1.0` durante el desarrollo; `v1.0.0` al lanzar. feature→minor,
+  improvement/fix/security→patch, rediseño grande→major.
+- **Regla**: cada deploy con cambio visible añade entrada a `CHANGELOG.md` y, si corresponde, sube
+  `VERSION`. Documentado en el `CLAUDE.md` raíz.
+
+## 18. Metodología de documentación (path-scoped, desde cero)
+
+Adaptación de la guía VIP SOFT de documentación path-scoped, pero en su forma **"nace ordenado"**
+(no el flujo de remediación, que es para repos ya inflados):
+- **`CLAUDE.md` raíz corto** (≤300 líneas): one-liner, stack, estructura, cómo contribuir, regla de
+  changelog, despliegue.
+- **`assets/js/data/CLAUDE.md` path-scoped**: reglas para quien edita datos (schema de civ/evento/tour,
+  años negativos = a.C., citar fuente, no romper ids). Se carga solo al tocar esa carpeta.
+- **Sin** scripts de auditoría de drift ni hook de rotación todavía (innecesarios en un repo nuevo);
+  se adoptarán si el `CLAUDE.md` raíz supera ~300 líneas en el futuro.
