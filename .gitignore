@@ -1,0 +1,10 @@
+# Imágenes fuente de gran tamaño (referencia local, no se versiona)
+resources/1878_Adams_Monumental_Illustrated_Panorama_of_History*.jpg
+
+# Sistema
+.DS_Store
+Thumbs.db
+
+# Logs / temporales
+*.log
+node_modules/
