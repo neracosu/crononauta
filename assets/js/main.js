@@ -9,6 +9,8 @@ import { showTooltip, moveTooltip, hideTooltip } from './ui/tooltip.js';
 import { initPanel, openPanel } from './ui/panel.js';
 import { renderMarkers } from './render/markers.js';
 import { initControls } from './ui/controls.js';
+import { initSearch } from './ui/search.js';
+import { initLegend } from './ui/legend.js';
 
 const world = document.getElementById('world');
 const svg = document.getElementById('chart-svg');
@@ -100,6 +102,8 @@ app.addEventListener('wheel', e => {
 // Controles + navegación + panel
 const controls = initControls(vp, { byId, openPanel, totalHeight, onTour: () => window.CRONO?.startTour?.() });
 initPanel(controls.goToCiv);
+initSearch(controls.goToCiv);
+initLegend(controls.goToCiv);
 
 document.getElementById('version-badge').textContent = 'v' + VERSION;
 
