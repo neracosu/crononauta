@@ -20,6 +20,9 @@
 .panel-body .strong { font-weight: 600; margin-top: 16px; }
 .panel-body .ev { font-size: 13px; padding-left: 8px; border-left: 2px solid var(--gold); margin: 4px 0; }
 .panel-body .ev strong { color: var(--gold-light); }
+.panel-body .src { margin-top: 14px; }
+.panel-body .src a { color: var(--gold-light); font-size: 13px; text-decoration: none; }
+.panel-body .src a:hover { text-decoration: underline; }
 .tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; }
 .tag { padding: 3px 10px; border: 1px solid rgba(184,134,11,.3); border-radius: 12px; font-size: 11px;
   color: var(--gold-light); text-transform: uppercase; letter-spacing: .5px; }

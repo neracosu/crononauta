@@ -52,5 +52,6 @@ CREATE TABLE eventos (
   wikidata    VARCHAR(20) NULL,
   KEY k_ev_capa (capa_id),
   KEY k_ev_region (region_id),
-  KEY k_ev_anio (anio)
+  KEY k_ev_anio (anio),
+  UNIQUE KEY u_ev_wikidata (wikidata)   -- dedup de la ingesta (NULLs permitidos para curados a mano)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

@@ -38,6 +38,10 @@ body.dragging { cursor: grabbing; }
   border: 1px solid rgba(184,134,11,.3); border-radius: 10px;
   color: var(--gold-light); background: rgba(26,20,16,.6);
 }
+#appfoot .foot-src { color: #6b5b4b; }
+#appfoot .foot-src a { color: #8b7d6b; pointer-events: auto; }
+#appfoot .foot-src a:hover { color: var(--gold-light); }
+@media (max-width: 760px) { #appfoot .foot-src { display: none; } }
 
 ::-webkit-scrollbar { width: 8px; height: 8px; }
 ::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); }

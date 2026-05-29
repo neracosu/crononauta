@@ -1,7 +1,7 @@
 import { formatYear } from '../core/coords.js';
 import { CIVS } from '../data/civilizations.js';
 import { EVENTS } from '../data/events.js';
-import { REGIONS } from '../data/regions.js';
+import { regionById } from '../data/regions.js';
 import { loadImage } from './imageLoader.js';
 import { CIV_IMG, EVENT_IMG, CIV_ICONS, DEFAULT_ICON } from '../data/images.js';
 
@@ -22,11 +22,11 @@ export function openPanel(data) {
   loadImage(document.getElementById('panel-hero'), document.getElementById('panel-fb'),
     url, data.color || '#daa520', (data.id && CIV_ICONS[data.id]) || DEFAULT_ICON, data.name);
 
-  let html = `<p>${data.desc || ''}</p>`;
+  let html = `<p class="pdesc">${data.desc || ''}</p>`;
   if (!data.isEvent) {
     const dur = data.end - data.start;
     html += `<p class="muted">Duración aproximada: <strong>${dur.toLocaleString('es')} años</strong></p>`;
-    html += `<div class="tags"><span class="tag">${REGIONS[data.region]?.name || ''}</span></div>`;
+    html += `<div class="tags"><span class="tag">${regionById(data.region)?.name || ''}</span></div>`;
     const contemp = CIVS.filter(c => c.id !== data.id && c.start < data.end && c.end > data.start);
     if (contemp.length) {
       html += `<p class="muted strong">Contemporáneas:</p><div class="tags">`;
@@ -39,12 +39,37 @@ export function openPanel(data) {
       evs.forEach(ev => html += `<p class="ev"><strong>${formatYear(ev.year)}</strong> — ${ev.name}</p>`);
     }
   }
+  if (data.source) {
+    html += `<p class="src"><a href="${data.source}" target="_blank" rel="noopener">Fuente: Wikipedia ↗</a></p>`;
+  }
   const body = document.getElementById('panel-body');
   body.innerHTML = html;
   body.querySelectorAll('.tag.link').forEach(t =>
     t.addEventListener('click', () => onNavigate && onNavigate(t.dataset.civ)));
   panel.classList.add('open');
   panel.setAttribute('aria-hidden', 'false');
+
+  // Eventos sin texto guardado: traer resumen + imagen en vivo de Wikipedia (citando la fuente).
+  if (data.isEvent && data.source && !(data.desc && data.desc.trim())) loadWikiSummary(data.source);
+}
+
+async function loadWikiSummary(sourceUrl) {
+  try {
+    const raw = sourceUrl.split('/wiki/')[1];
+    if (!raw) return;
+    const title = encodeURIComponent(decodeURIComponent(raw));
+    const r = await fetch(`https://es.wikipedia.org/api/rest_v1/page/summary/${title}`);
+    if (!r.ok) return;
+    const s = await r.json();
+    const p = document.querySelector('#panel-body .pdesc');
+    if (p && s.extract) p.textContent = s.extract;
+    if (s.thumbnail && s.thumbnail.source) {
+      const hero = document.getElementById('panel-hero');
+      const fb = document.getElementById('panel-fb');
+      hero.onload = () => { hero.style.display = 'block'; hero.classList.add('loaded'); if (fb) fb.style.display = 'none'; };
+      hero.src = s.thumbnail.source;
+    }
+  } catch (e) { /* silencioso: si Wikipedia no responde, queda el enlace a la fuente */ }
 }
 
 export function closePanel() {

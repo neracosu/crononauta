@@ -6,6 +6,17 @@ Lo más reciente arriba.
 
 ## [Sin publicar]
 
+## [1.3.0] - 2026-05-29
+
+### Añadido (Fase 2 — motor de contenido)
+- **Motor de ingesta Wikidata** (`scripts/import-wikidata.mjs`): consulta SPARQL por capa
+  e inserta en la DB con deduplicación por QID. Sembradas las capas **Guerras** (+118) y
+  **Salud** (+28) — de 48 a **194 eventos**.
+- **Cita de la fuente**: cada evento importado enlaza a su artículo de Wikipedia; el panel
+  trae **resumen + imagen en vivo** desde la API de Wikipedia cuando no hay texto guardado.
+- Aviso de licencias (footer + `CREDITS.md`): Wikidata CC0 · Wikipedia CC BY-SA.
+- Marcadores escalonados verticalmente para reducir amontonamiento.
+
 ## [1.2.1] - 2026-05-29
 
 ### Cambiado
