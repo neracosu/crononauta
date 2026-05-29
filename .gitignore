@@ -1,6 +1,10 @@
 # Imágenes fuente de gran tamaño (referencia local, no se versiona)
 resources/1878_Adams_Monumental_Illustrated_Panorama_of_History*.jpg
 
+# Imágenes descargadas (se regeneran con scripts/download-images.sh)
+assets/img/civs/*.jpg
+assets/img/events/*.jpg
+
 # Sistema
 .DS_Store
 Thumbs.db
