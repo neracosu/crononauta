@@ -11,6 +11,7 @@ import { renderMarkers } from './render/markers.js';
 import { initControls } from './ui/controls.js';
 import { initSearch } from './ui/search.js';
 import { initLegend } from './ui/legend.js';
+import { initMinimap } from './render/minimap.js';
 
 const world = document.getElementById('world');
 const svg = document.getElementById('chart-svg');
@@ -104,6 +105,7 @@ const controls = initControls(vp, { byId, openPanel, totalHeight, onTour: () => 
 initPanel(controls.goToCiv);
 initSearch(controls.goToCiv);
 initLegend(controls.goToCiv);
+initMinimap(vp, totalHeight);
 
 document.getElementById('version-badge').textContent = 'v' + VERSION;
 
