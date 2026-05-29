@@ -11,3 +11,15 @@
 #tooltip .tt-title { font-family: var(--font-display); font-size: 15px; font-weight: 700; color: var(--gold-light); }
 #tooltip .tt-dates { font-size: 12px; color: #b8a88a; font-style: italic; margin: 2px 0 6px; }
 #tooltip .tt-desc { font-size: 13px; }
+
+/* Controles */
+#controls { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+  display: flex; gap: 8px; align-items: center; z-index: 100; padding: 8px 14px;
+  background: var(--chrome-bg); border: 1px solid rgba(184,134,11,.3); border-radius: 40px;
+  backdrop-filter: blur(10px); box-shadow: 0 4px 20px rgba(0,0,0,.4); }
+#controls button { width: 36px; height: 36px; border-radius: 50%; cursor: pointer;
+  background: rgba(184,134,11,.15); border: 1px solid rgba(184,134,11,.3); color: var(--gold-light);
+  font-size: 16px; display: flex; align-items: center; justify-content: center; }
+#controls button:hover { background: rgba(184,134,11,.3); }
+#controls .divider { width: 1px; height: 24px; background: rgba(184,134,11,.3); }
+#zoom-display { color: #b8a88a; font-size: 12px; min-width: 42px; text-align: center; }

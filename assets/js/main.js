@@ -8,6 +8,7 @@ import { riverPath, connectorPath } from './render/rivers.js';
 import { showTooltip, moveTooltip, hideTooltip } from './ui/tooltip.js';
 import { initPanel, openPanel } from './ui/panel.js';
 import { renderMarkers } from './render/markers.js';
+import { initControls } from './ui/controls.js';
 
 const world = document.getElementById('world');
 const svg = document.getElementById('chart-svg');
@@ -96,10 +97,11 @@ app.addEventListener('wheel', e => {
   vp.zoomAt(e.deltaY > 0 ? 0.9 : 1.1, e.clientX - r.left, e.clientY - r.top);
 }, { passive: false });
 
-// Panel lateral (la navegación a civ se reemplaza por goToCiv en Task 11)
-initPanel(id => openPanel(byId[id]));
+// Controles + navegación + panel
+const controls = initControls(vp, { byId, openPanel, totalHeight, onTour: () => window.CRONO?.startTour?.() });
+initPanel(controls.goToCiv);
 
 document.getElementById('version-badge').textContent = 'v' + VERSION;
 
 // Exponer para depurar / siguientes tareas
-window.CRONO = { vp, REGIONS, CIVS, byId, totalHeight };
+window.CRONO = { vp, REGIONS, CIVS, byId, totalHeight, controls, goToCiv: controls.goToCiv };
