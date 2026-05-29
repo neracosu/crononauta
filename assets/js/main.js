@@ -1,6 +1,8 @@
 import { VERSION } from './data/version.js';
 import { loadData } from './data/load.js';
 import { REGIONS } from './data/regions.js';
+import { civLayer } from './data/layers.js';
+import { initLayers } from './ui/layers.js';
 import { CIVS } from './data/civilizations.js';
 import { layout, yearToX, CHART_WIDTH } from './core/coords.js';
 import { createViewport } from './core/viewport.js';
@@ -51,17 +53,20 @@ CIVS.filter(c => c.parent && byId[c.parent]).forEach(child => {
   conn.setAttribute('d', connectorPath(byId[child.parent], child));
   conn.setAttribute('class', 'river-connector');
   conn.setAttribute('fill', child.color);
+  conn.dataset.layer = civLayer(child);
   svg.appendChild(conn);
 });
 
 // Ríos orgánicos afilados (SVG) + etiqueta (overlay)
 CIVS.forEach(civ => {
   const d = riverPath(civ);
+  const lyr = civLayer(civ);
   const fill = document.createElementNS(SVGNS, 'path');
   fill.setAttribute('d', d);
   fill.setAttribute('fill', civ.color);
   fill.setAttribute('class', 'river');
   fill.dataset.id = civ.id;
+  fill.dataset.layer = lyr;
   fill.addEventListener('mouseenter', e => showTooltip(e, civ));
   fill.addEventListener('mousemove', moveTooltip);
   fill.addEventListener('mouseleave', hideTooltip);
@@ -72,12 +77,14 @@ CIVS.forEach(civ => {
   shade.setAttribute('d', d);
   shade.setAttribute('fill', 'url(#riverShade)');
   shade.setAttribute('pointer-events', 'none');
+  shade.dataset.layer = lyr;
   svg.appendChild(shade);
 
   const lab = document.createElement('div');
   lab.className = 'civ-label' + (brightColors.includes(civ.color) ? ' dark' : '');
   lab.style.left = (yearToX(civ.start) + 8) + 'px';
   lab.style.top = civ.yCenter + 'px';
+  lab.dataset.layer = lyr;
   lab.textContent = civ.name;
   overlay.appendChild(lab);
 });
@@ -142,6 +149,14 @@ initMinimap(vp, totalHeight);
 
 const tour = initTour(vp, byId);
 initSplash(() => controls.reset(), () => tour.start());
+
+// Capas: muestra/oculta todo elemento [data-layer] según el conjunto activo
+function applyLayers(active) {
+  overlay.parentNode.querySelectorAll('[data-layer]').forEach(el => {
+    el.style.display = active.has(el.dataset.layer) ? '' : 'none';
+  });
+}
+initLayers(applyLayers);
 
 document.getElementById('version-badge').textContent = 'v' + VERSION;
 

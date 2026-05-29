@@ -35,6 +35,28 @@
   padding: 7px 13px; border-radius: 20px; font-family: var(--font-ui); font-size: 13px; width: 220px; outline: none; }
 #search-input:focus { border-color: var(--gold-light); width: 280px; transition: width .2s; }
 
+/* Capas */
+#layers-toggle { position: fixed; top: 64px; left: 18px; z-index: 100; padding: 6px 14px; cursor: pointer;
+  background: var(--chrome-bg); border: 1px solid rgba(184,134,11,.3); color: var(--gold-light); border-radius: 20px; font-size: 13px; }
+#layers-toggle:hover { background: rgba(184,134,11,.2); }
+#layers-panel { position: fixed; top: 104px; left: 18px; z-index: 100; width: 232px; max-height: 64vh; overflow-y: auto;
+  display: none; flex-direction: column; background: rgba(26,20,16,.96); border: 1px solid rgba(184,134,11,.3);
+  border-radius: 8px; padding: 8px; box-shadow: 0 4px 20px rgba(0,0,0,.4); }
+#layers-panel.open { display: flex; }
+.layers-head { display: flex; align-items: center; justify-content: space-between; padding: 4px 6px 8px;
+  font-family: var(--font-display); font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--gold-light);
+  border-bottom: 1px solid rgba(184,134,11,.2); margin-bottom: 4px; }
+.layers-all { background: rgba(184,134,11,.15); border: 1px solid rgba(184,134,11,.3); color: var(--gold-light);
+  border-radius: 12px; font-size: 10px; padding: 2px 8px; cursor: pointer; }
+.layers-all:hover { background: rgba(184,134,11,.3); }
+.layer-row { display: flex; align-items: center; gap: 8px; padding: 5px 6px; cursor: pointer; border-radius: 6px; opacity: .42; transition: opacity .15s, background .15s; }
+.layer-row.on { opacity: 1; }
+.layer-row:hover { background: rgba(184,134,11,.1); }
+.layer-sw { width: 22px; height: 18px; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 11px; flex-shrink: 0; }
+.layer-name { flex: 1; font-size: 12px; color: #e8dcc4; font-family: var(--font-ui); }
+.layer-only { background: none; border: none; color: #8b7d6b; cursor: pointer; font-size: 13px; padding: 0 4px; }
+.layer-only:hover { color: var(--gold-light); }
+
 /* Leyenda */
 #legend-toggle { position: fixed; top: 64px; right: 18px; z-index: 100; padding: 6px 14px; cursor: pointer;
   background: var(--chrome-bg); border: 1px solid rgba(184,134,11,.3); color: var(--gold-light); border-radius: 20px; font-size: 13px; }
