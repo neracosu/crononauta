@@ -6,7 +6,12 @@ Lo más reciente arriba.
 
 ## [Sin publicar]
 
-Pendiente para v1.0.0: revisión final del dueño y lanzamiento oficial.
+## [1.0.0] - 2026-05-29
+
+### Lanzamiento oficial 🎉
+CRONONAUTA sale en vivo con todo lo descrito en v0.9.0 (atlas-río interactivo,
+modo Recorrido, panel, búsqueda, leyenda, minimapa, imágenes, responsive, SEO).
+Cache de producción ajustado: imágenes con cache largo; HTML/CSS/JS revalidados.
 
 ## [0.9.0] - 2026-05-29
 
