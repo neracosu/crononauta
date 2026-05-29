@@ -1,0 +1,49 @@
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html, body { height: 100%; }
+
+body {
+  background: #1a1410;
+  overflow: hidden;
+  font-family: var(--font-ui);
+  color: var(--ink);
+  cursor: grab;
+}
+body.dragging { cursor: grabbing; }
+
+#app {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+/* Capa que se mueve con la cámara (contiene SVG + overlay HTML) */
+#world {
+  position: absolute;
+  top: 0; left: 0;
+  transform-origin: 0 0;
+  will-change: transform;
+}
+
+/* Footer: link al repo + badge de versión */
+#appfoot {
+  position: fixed; bottom: 6px; left: 12px; z-index: 80;
+  display: flex; gap: 10px; align-items: center;
+  font-family: var(--font-ui); font-size: 11px; color: #8b7d6b; pointer-events: none;
+}
+#appfoot a { color: #8b7d6b; pointer-events: auto; text-decoration: none; }
+#appfoot a:hover { color: var(--gold-light); }
+#version-badge {
+  font-family: var(--font-label); padding: 1px 7px;
+  border: 1px solid rgba(184,134,11,.3); border-radius: 10px;
+  color: var(--gold-light); background: rgba(26,20,16,.6);
+}
+
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); }
+::-webkit-scrollbar-thumb { background: rgba(184,134,11,0.35); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(184,134,11,0.55); }
+
+@media (prefers-reduced-motion: reduce) {
+  :root { --dur-cam: 0ms; }
+}

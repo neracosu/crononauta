@@ -1,0 +1,23 @@
+:root {
+  /* Paleta pergamino moderno */
+  --parchment: #f0e2c4;
+  --parchment-2: #e8d5a8;
+  --parchment-dark: #d4c4a0;
+  --ink: #2a1f14;
+  --ink-light: #5c4a3a;
+  --ink-faint: #8b7d6b;
+  --gold: #b8860b;
+  --gold-light: #daa520;
+  --red-accent: #8b1a1a;
+  --border-ornate: #6b5b4b;
+  --chrome-bg: rgba(26, 20, 16, 0.92);
+
+  /* Tipografía */
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-ui: 'Inter', system-ui, sans-serif;
+  --font-label: 'EB Garamond', Georgia, serif;
+
+  /* Motion */
+  --ease-soft: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --dur-cam: 900ms;
+}
