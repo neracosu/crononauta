@@ -5,6 +5,7 @@ import { layout, yearToX, CHART_WIDTH } from './core/coords.js';
 import { createViewport } from './core/viewport.js';
 import { renderTimeline } from './render/timeline.js';
 import { riverPath, connectorPath } from './render/rivers.js';
+import { showTooltip, moveTooltip, hideTooltip } from './ui/tooltip.js';
 
 const world = document.getElementById('world');
 const svg = document.getElementById('chart-svg');
@@ -49,6 +50,9 @@ CIVS.forEach(civ => {
   fill.setAttribute('fill', civ.color);
   fill.setAttribute('class', 'river');
   fill.dataset.id = civ.id;
+  fill.addEventListener('mouseenter', e => showTooltip(e, civ));
+  fill.addEventListener('mousemove', moveTooltip);
+  fill.addEventListener('mouseleave', hideTooltip);
   svg.appendChild(fill);
 
   const shade = document.createElementNS(SVGNS, 'path');
