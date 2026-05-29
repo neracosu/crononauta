@@ -36,10 +36,12 @@
   writing-mode: vertical-rl; transform: rotate(180deg); pointer-events: none;
 }
 
-/* Banda temporal (simple, sustituida por ríos en Task 6) */
-.civ-band { position: absolute; border-radius: 4px; cursor: pointer; }
+/* Ríos */
+.river { cursor: pointer; transition: filter .18s; }
+.river:hover { filter: brightness(1.12) saturate(1.15); }
 .civ-label {
   position: absolute; font-family: var(--font-label); font-size: 11px; font-weight: 600;
   color: rgba(255,255,255,.96); text-shadow: 0 1px 3px rgba(0,0,0,.7);
   white-space: nowrap; pointer-events: none; transform: translateY(-50%);
 }
+.civ-label.dark { color: rgba(0,0,0,.82); text-shadow: 0 1px 2px rgba(255,255,255,.5); }

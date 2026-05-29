@@ -1,9 +1,10 @@
 import { VERSION } from './data/version.js';
 import { REGIONS } from './data/regions.js';
 import { CIVS } from './data/civilizations.js';
-import { layout, yearToX, bandPeak, CHART_WIDTH } from './core/coords.js';
+import { layout, yearToX, CHART_WIDTH } from './core/coords.js';
 import { createViewport } from './core/viewport.js';
 import { renderTimeline } from './render/timeline.js';
+import { riverPath } from './render/rivers.js';
 
 const world = document.getElementById('world');
 const svg = document.getElementById('chart-svg');
@@ -18,24 +19,37 @@ svg.setAttribute('viewBox', `0 0 ${CHART_WIDTH} ${totalHeight}`);
 
 renderTimeline(svg, overlay, REGIONS, totalHeight);
 
-// Bandas simples (provisional — se reemplazan por ríos en Task 6)
+// Gradiente de volumen reutilizable
+const SVGNS = 'http://www.w3.org/2000/svg';
+const defs = document.createElementNS(SVGNS, 'defs');
+defs.innerHTML = `<linearGradient id="riverShade" x1="0" y1="0" x2="0" y2="1">
+  <stop offset="0%" stop-color="rgba(255,255,255,0.28)"/>
+  <stop offset="45%" stop-color="rgba(255,255,255,0)"/>
+  <stop offset="100%" stop-color="rgba(0,0,0,0.16)"/>
+</linearGradient>`;
+svg.appendChild(defs);
+
+const brightColors = ['#d4a843','#f1c40f','#f39c12','#ff8c00','#daa520','#cd853f','#c2955a'];
+
+// Ríos orgánicos afilados (SVG) + etiqueta (overlay)
 CIVS.forEach(civ => {
-  const x = yearToX(civ.start);
-  const w = Math.max(yearToX(civ.end) - x, 18);
-  const peak = bandPeak(civ.tier);
-  const band = document.createElement('div');
-  band.className = 'civ-band';
-  band.dataset.id = civ.id;
-  band.style.left = x + 'px';
-  band.style.top = (civ.yCenter - peak / 2) + 'px';
-  band.style.width = w + 'px';
-  band.style.height = peak + 'px';
-  band.style.background = civ.color;
-  overlay.appendChild(band);
+  const d = riverPath(civ);
+  const fill = document.createElementNS(SVGNS, 'path');
+  fill.setAttribute('d', d);
+  fill.setAttribute('fill', civ.color);
+  fill.setAttribute('class', 'river');
+  fill.dataset.id = civ.id;
+  svg.appendChild(fill);
+
+  const shade = document.createElementNS(SVGNS, 'path');
+  shade.setAttribute('d', d);
+  shade.setAttribute('fill', 'url(#riverShade)');
+  shade.setAttribute('pointer-events', 'none');
+  svg.appendChild(shade);
 
   const lab = document.createElement('div');
-  lab.className = 'civ-label';
-  lab.style.left = (x + 6) + 'px';
+  lab.className = 'civ-label' + (brightColors.includes(civ.color) ? ' dark' : '');
+  lab.style.left = (yearToX(civ.start) + 8) + 'px';
   lab.style.top = civ.yCenter + 'px';
   lab.textContent = civ.name;
   overlay.appendChild(lab);
