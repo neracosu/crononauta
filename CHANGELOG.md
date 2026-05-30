@@ -6,6 +6,13 @@ Lo más reciente arriba.
 
 ## [Sin publicar]
 
+## [1.5.1] - 2026-05-29
+
+### Añadido
+- **Ríos de densidad por capa** en la vista Capas: cada capa de eventos (guerras, ciencia,
+  salud…) ahora fluye como un río que se ensancha donde tiene más actividad histórica
+  (antes esos carriles salían vacíos, solo con puntos).
+
 ## [1.5.0] - 2026-05-29
 
 ### Añadido (Fase 3 — doble modo)

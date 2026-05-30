@@ -30,6 +30,39 @@ export function riverPath(civ) {
   ].join(' ');
 }
 
+// Río de densidad para una capa temática (de eventos): banda que fluye de su primer
+// a su último evento y se ensancha donde hay más actividad. Afilada en los extremos.
+export function densityRiverPath(years, yCenter, maxHalf) {
+  if (!years.length) return '';
+  const sorted = [...years].sort((a, b) => a - b);
+  const y0 = sorted[0], y1 = sorted[sorted.length - 1];
+  if (y1 === y0) {
+    const x = yearToX(y0);
+    return `M ${x - 10} ${yCenter} Q ${x} ${yCenter - maxHalf} ${x + 10} ${yCenter} Q ${x} ${yCenter + maxHalf} ${x - 10} ${yCenter} Z`;
+  }
+  const N = 72;
+  const win = Math.max((y1 - y0) / 18, 60); // ventana de suavizado (años)
+  const dens = [];
+  let maxd = 1;
+  for (let i = 0; i <= N; i++) {
+    const yr = y0 + (y1 - y0) * i / N;
+    let c = 0;
+    for (const yy of sorted) if (Math.abs(yy - yr) <= win) c++;
+    dens.push(c); if (c > maxd) maxd = c;
+  }
+  const half = i => Math.max(2.5, (dens[i] / maxd) * maxHalf);
+  let d = `M ${yearToX(y0).toFixed(1)} ${yCenter}`;
+  for (let i = 1; i <= N; i++) {
+    const x = yearToX(y0 + (y1 - y0) * i / N).toFixed(1);
+    d += ` L ${x} ${(yCenter - (i === N ? 0 : half(i))).toFixed(1)}`;
+  }
+  for (let i = N; i >= 0; i--) {
+    const x = yearToX(y0 + (y1 - y0) * i / N).toFixed(1);
+    d += ` L ${x} ${(yCenter + (i === 0 || i === N ? 0 : half(i))).toFixed(1)}`;
+  }
+  return d + ' Z';
+}
+
 // Conector bezier tipo cinta del fin del padre al inicio del hijo (split/merge).
 export function connectorPath(parent, child) {
   const x0 = yearToX(parent.end), y0 = parent.yCenter;

@@ -1,13 +1,13 @@
 import { VERSION } from './data/version.js';
 import { loadData } from './data/load.js';
 import { REGIONS, regionById } from './data/regions.js';
-import { civLayer, LAYERS } from './data/layers.js';
+import { civLayer, LAYERS, layerById } from './data/layers.js';
 import { initLayers } from './ui/layers.js';
 import { CIVS } from './data/civilizations.js';
 import { layout, yearToX, CHART_WIDTH } from './core/coords.js';
 import { createViewport } from './core/viewport.js';
 import { renderTimeline } from './render/timeline.js';
-import { riverPath, connectorPath } from './render/rivers.js';
+import { riverPath, connectorPath, densityRiverPath } from './render/rivers.js';
 import { showTooltip, moveTooltip, hideTooltip } from './ui/tooltip.js';
 import { initPanel, openPanel } from './ui/panel.js';
 import { renderMarkers } from './render/markers.js';
@@ -96,6 +96,20 @@ CIVS.forEach(civ => {
   lab.textContent = civ.name;
   overlay.appendChild(lab);
 });
+
+// Vista Capas: río de densidad por cada capa de eventos (las que no tienen bandas-civ)
+if (VISTA === 'capas') {
+  groups.filter(g => g.laneCount === 0).forEach(g => {
+    const years = EVENTS.filter(e => e.layer === g.id).map(e => e.year);
+    if (!years.length) return;
+    const path = document.createElementNS(SVGNS, 'path');
+    path.setAttribute('d', densityRiverPath(years, g.yStart + 48, 40));
+    path.setAttribute('fill', layerById(g.id).color);
+    path.setAttribute('class', 'layer-river');
+    path.dataset.layer = g.id;
+    svg.appendChild(path);
+  });
+}
 
 renderMarkers(overlay, groupForEvent);
 
