@@ -1,2 +1,2 @@
 // Sube esto en cada deploy con cambio visible (ver CHANGELOG.md y CLAUDE.md raíz).
-export const VERSION = '1.3.0';
+export const VERSION = '1.4.0';

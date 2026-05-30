@@ -147,15 +147,29 @@ initSearch(controls.goToCiv);
 initLegend(controls.goToCiv);
 initMinimap(vp, totalHeight);
 
-// Capas: estado activo + visibilidad. El tour se construye según las capas activas.
+// Capas + culling/nivel de detalle. La visibilidad combina: capa activa + en viewport + LOD.
 let activeLayers = new Set();
 const getActive = () => activeLayers;
-function applyLayers(active) {
-  activeLayers = active;
+const LOD_SCALE = 0.7; // por debajo de este zoom solo se ven los hitos dorados
+function refreshVisibility() {
+  const sc = vp.state.scale, px = vp.state.x;
+  const left = -px / sc - 200, right = (innerWidth - px) / sc + 200;
   overlay.parentNode.querySelectorAll('[data-layer]').forEach(el => {
-    el.style.display = active.has(el.dataset.layer) ? '' : 'none';
+    const layerOn = activeLayers.has(el.dataset.layer);
+    if (el.classList.contains('event-marker')) {
+      const x = parseFloat(el.style.left);
+      const ok = layerOn && x >= left && x <= right && (el.classList.contains('golden') || sc >= LOD_SCALE);
+      el.style.display = ok ? '' : 'none';
+    } else {
+      el.style.display = layerOn ? '' : 'none';
+    }
   });
 }
+function applyLayers(active) { activeLayers = active; refreshVisibility(); }
+
+// Refrescar culling/LOD al desplazar o hacer zoom (throttled a un frame)
+const _vpApply = vp.apply; let _rafPend = false;
+vp.apply = () => { _vpApply(); if (!_rafPend) { _rafPend = true; requestAnimationFrame(() => { _rafPend = false; refreshVisibility(); }); } };
 
 const tour = initTour(vp, byId, getActive);
 initSplash(() => controls.reset(), () => tour.start());

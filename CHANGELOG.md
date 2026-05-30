@@ -6,6 +6,15 @@ Lo más reciente arriba.
 
 ## [Sin publicar]
 
+## [1.4.0] - 2026-05-29
+
+### Añadido
+- **Presets de audiencia en el inicio**: "¿Qué historia quieres explorar?" → Todo,
+  Fe/Bíblica, Medicina, Guerras, Ciencia y tecnología (Fase 3).
+- **Nivel de detalle + culling** (Fase 4): alejado se ven solo los hitos dorados; al
+  acercarte aparecen todos; solo se renderiza lo visible. Limpia las capas densas y
+  prepara el rendimiento para miles de eventos.
+
 ## [1.3.0] - 2026-05-29
 
 ### Añadido (Fase 2 — motor de contenido)

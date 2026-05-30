@@ -73,6 +73,11 @@
 #splash h1 { font-family: var(--font-display); font-size: 40px; font-weight: 900; letter-spacing: 2px; color: var(--gold-light); }
 .splash-sub { font-style: italic; color: #8b7d6b; margin-top: 6px; }
 .splash-line { width: 120px; height: 1px; margin: 26px 0; background: linear-gradient(90deg, transparent, var(--gold), transparent); }
+.splash-q { font-family: var(--font-display); font-size: 16px; color: #b8a88a; margin-bottom: 14px; }
+.splash-presets { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; max-width: 540px; margin-bottom: 22px; }
+.splash-presets button { padding: 9px 18px; border-radius: 22px; cursor: pointer; font-family: var(--font-ui);
+  font-size: 14px; color: #f0e2c4; background: rgba(240,226,196,.06); border: 1px solid rgba(184,134,11,.35); transition: all .2s; }
+.splash-presets button:hover { background: rgba(184,134,11,.2); border-color: var(--gold-light); transform: translateY(-1px); }
 .splash-actions { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
 #splash button { padding: 12px 30px; border-radius: 30px; cursor: pointer; font-family: var(--font-display);
   font-size: 15px; letter-spacing: 1px; color: var(--gold-light);
