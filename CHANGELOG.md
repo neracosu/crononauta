@@ -6,6 +6,14 @@ Lo más reciente arriba.
 
 ## [Sin publicar]
 
+## [1.6.3] - 2026-05-29
+
+### Corregido
+- **Inundación de 404 en consola** por imágenes inexistentes (18 patriarcas + todos los
+  eventos nunca tuvieron imagen local). Ya no se piden: solo se solicitan las 42 imágenes
+  de civilización que existen; el resto usa emoji (tooltip) + Wikipedia en vivo (panel).
+  Verificado en navegador real: 0 404 de imágenes.
+
 ## [1.6.2] - 2026-05-29
 
 ### Corregido (verificado en navegador real con headless Chromium)
