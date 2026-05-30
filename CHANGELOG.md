@@ -6,6 +6,13 @@ Lo más reciente arriba.
 
 ## [Sin publicar]
 
+## [1.5.2] - 2026-05-29
+
+### Corregido
+- **Inicio en espacio en blanco**: al entrar o resetear, la cámara ahora **encuadra el
+  contenido de las capas activas** (te lleva a donde hay cosas). En vistas de solo capas
+  temáticas ya no se ocultan los marcadores por nivel de detalle.
+
 ## [1.5.1] - 2026-05-29
 
 ### Añadido

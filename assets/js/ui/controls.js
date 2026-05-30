@@ -1,7 +1,7 @@
 import { yearToX } from '../core/coords.js';
 
 // Crea funciones de navegación ligadas al viewport y wirea botones + teclado.
-export function initControls(vp, { byId, openPanel, totalHeight, onTour }) {
+export function initControls(vp, { byId, openPanel, totalHeight, onTour, frame }) {
   const display = document.getElementById('zoom-display');
   const orig = vp.apply;
   vp.apply = () => { orig(); display.textContent = Math.round(vp.state.scale * 100) + '%'; };
@@ -17,6 +17,7 @@ export function initControls(vp, { byId, openPanel, totalHeight, onTour }) {
     openPanel(c);
   }
   function reset() {
+    if (frame) { frame(); return; }
     vp.animateTo({ x: -yearToX(-1000) * 0.55 + innerWidth / 2, y: -totalHeight * 0.2, scale: 0.55 });
   }
 

@@ -4,7 +4,7 @@ import { REGIONS, regionById } from './data/regions.js';
 import { civLayer, LAYERS, layerById } from './data/layers.js';
 import { initLayers } from './ui/layers.js';
 import { CIVS } from './data/civilizations.js';
-import { layout, yearToX, CHART_WIDTH } from './core/coords.js';
+import { layout, yearToX, CHART_WIDTH, TOP_OFFSET } from './core/coords.js';
 import { createViewport } from './core/viewport.js';
 import { renderTimeline } from './render/timeline.js';
 import { riverPath, connectorPath, densityRiverPath } from './render/rivers.js';
@@ -162,8 +162,9 @@ app.addEventListener('touchmove', e => {
 }, { passive: false });
 app.addEventListener('touchend', () => { touch = null; }, { passive: true });
 
-// Controles + navegación + panel
-const controls = initControls(vp, { byId, openPanel, totalHeight, onTour: () => window.CRONO?.startTour?.() });
+// Controles + navegación + panel. `frame` encuadra el contenido de las capas activas.
+let frameActive;
+const controls = initControls(vp, { byId, openPanel, totalHeight, onTour: () => window.CRONO?.startTour?.(), frame: () => frameActive && frameActive() });
 initPanel(controls.goToCiv);
 initSearch(controls.goToCiv);
 initLegend(controls.goToCiv);
@@ -176,11 +177,13 @@ const LOD_SCALE = 0.7; // por debajo de este zoom solo se ven los hitos dorados
 function refreshVisibility() {
   const sc = vp.state.scale, px = vp.state.x;
   const left = -px / sc - 200, right = (innerWidth - px) / sc + 200;
+  // Solo aplicamos LOD (ocultar no-dorados al alejar) si hay bandas que den panorama.
+  const lodOn = activeLayers.has('civilizaciones') || activeLayers.has('religion');
   overlay.parentNode.querySelectorAll('[data-layer]').forEach(el => {
     const layerOn = activeLayers.has(el.dataset.layer);
     if (el.classList.contains('event-marker')) {
       const x = parseFloat(el.style.left);
-      const ok = layerOn && x >= left && x <= right && (el.classList.contains('golden') || sc >= LOD_SCALE);
+      const ok = layerOn && x >= left && x <= right && (!lodOn || el.classList.contains('golden') || sc >= LOD_SCALE);
       el.style.display = ok ? '' : 'none';
     } else {
       el.style.display = layerOn ? '' : 'none';
@@ -188,6 +191,20 @@ function refreshVisibility() {
   });
 }
 function applyLayers(active) { activeLayers = active; refreshVisibility(); }
+
+// Encuadra el contenido de las capas activas (evita iniciar en un espacio en blanco).
+frameActive = function () {
+  let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+  const add = (x, y) => { if (x < minX) minX = x; if (x > maxX) maxX = x; if (y < minY) minY = y; if (y > maxY) maxY = y; };
+  CIVS.forEach(c => { if (activeLayers.has(civLayer(c))) { add(yearToX(c.start), c.yCenter); add(yearToX(c.end), c.yCenter); } });
+  EVENTS.forEach(e => { if (activeLayers.has(e.layer)) { const g = groupForEvent(e); add(yearToX(e.year), (g.yStart || TOP_OFFSET) + (VISTA === 'capas' ? 48 : 0)); } });
+  if (minX === Infinity) { vp.animateTo({ x: innerWidth / 2 - yearToX(0) * 0.5, y: 60, scale: 0.5 }); return; }
+  const w = Math.max(maxX - minX, 400), h = Math.max(maxY - minY, 200);
+  let scale = Math.min((innerWidth - 220) / w, (innerHeight - 200) / h);
+  scale = Math.max(0.16, Math.min(1.2, scale));
+  const cx = minX + w / 2, cy = minY + h / 2;
+  vp.animateTo({ x: innerWidth / 2 - cx * scale, y: innerHeight / 2 - cy * scale, scale });
+};
 
 // Refrescar culling/LOD al desplazar o hacer zoom (throttled a un frame)
 const _vpApply = vp.apply; let _rafPend = false;
