@@ -6,6 +6,12 @@ Lo más reciente arriba.
 
 ## [Sin publicar]
 
+## [1.6.1] - 2026-05-29
+
+### Corregido
+- `ReferenceError: EVENTS is not defined` al entrar: faltaba importar `EVENTS` en `main.js`
+  (lo usaban `frameActive` y los ríos de densidad). Rompía el encuadre inicial y las capas.
+
 ## [1.6.0] - 2026-05-29
 
 ### Añadido

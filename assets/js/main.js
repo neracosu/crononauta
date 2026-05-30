@@ -4,6 +4,7 @@ import { REGIONS, regionById } from './data/regions.js';
 import { civLayer, LAYERS, layerById } from './data/layers.js';
 import { initLayers } from './ui/layers.js';
 import { CIVS } from './data/civilizations.js';
+import { EVENTS } from './data/events.js';
 import { layout, yearToX, CHART_WIDTH, TOP_OFFSET } from './core/coords.js';
 import { createViewport } from './core/viewport.js';
 import { renderTimeline } from './render/timeline.js';
