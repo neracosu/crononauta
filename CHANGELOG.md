@@ -6,6 +6,17 @@ Lo más reciente arriba.
 
 ## [Sin publicar]
 
+## [1.6.2] - 2026-05-29
+
+### Corregido (verificado en navegador real con headless Chromium)
+- **El zoom semántico, el % de zoom y el minimapa no se actualizaban** tras la carga: el
+  viewport se "envolvía" desde fuera (`vp.apply`), pero los métodos internos llaman al apply
+  interno → los envoltorios nunca corrían. Reemplazado por un **registro de listeners** propio
+  del viewport que se dispara en cada movimiento.
+- **Las etiquetas de evento nunca aparecían** al hacer zoom: el CSS las pone `display:none` y
+  se "mostraban" con `display=''` (que revierte al CSS). Ahora se muestran con `display:block`.
+- Favicon SVG inline (elimina el 404 de `favicon.ico`).
+
 ## [1.6.1] - 2026-05-29
 
 ### Corregido

@@ -3,7 +3,7 @@ import { yearToX, CHART_WIDTH } from '../core/coords.js';
 
 const MM_W = 240, MM_H = 84;
 
-export function initMinimap(vp, totalHeight) {
+export function initMinimap(vp, totalHeight, register) {
   const cv = document.getElementById('minimap-canvas');
   const ctx = cv.getContext('2d');
   const vpEl = document.getElementById('minimap-vp');
@@ -27,8 +27,7 @@ export function initMinimap(vp, totalHeight) {
     vpEl.style.width = Math.min((innerWidth / vp.state.scale) * sx, MM_W) + 'px';
     vpEl.style.height = Math.min((innerHeight / vp.state.scale) * sy, MM_H) + 'px';
   }
-  const prev = vp.apply;
-  vp.apply = () => { prev(); update(); };
+  if (register) register(update);
   update();
 
   document.getElementById('minimap').addEventListener('click', e => {

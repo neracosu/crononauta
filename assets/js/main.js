@@ -114,8 +114,11 @@ if (VISTA === 'capas') {
 
 renderMarkers(overlay, groupForEvent);
 
-// Viewport + interacción
-const vp = createViewport(world);
+// Viewport + interacción. Registro de listeners: TODO movimiento (set/zoomAt/animateTo)
+// dispara onChange → se notifica a zoom display, minimapa y zoom semántico.
+const vpListeners = [];
+const register = fn => vpListeners.push(fn);
+const vp = createViewport(world, s => { for (const f of vpListeners) f(s); });
 vp.set({ x: -yearToX(-1000) * 0.55 + innerWidth / 2, y: -totalHeight * 0.2, scale: 0.55 });
 
 const app = document.getElementById('app');
@@ -165,11 +168,11 @@ app.addEventListener('touchend', () => { touch = null; }, { passive: true });
 
 // Controles + navegación + panel. `frame` encuadra el contenido de las capas activas.
 let frameActive;
-const controls = initControls(vp, { byId, openPanel, totalHeight, onTour: () => window.CRONO?.startTour?.(), frame: () => frameActive && frameActive() });
+const controls = initControls(vp, { byId, openPanel, totalHeight, onTour: () => window.CRONO?.startTour?.(), frame: () => frameActive && frameActive(), register });
 initPanel(controls.goToCiv);
 initSearch(controls.goToCiv);
 initLegend(controls.goToCiv);
-initMinimap(vp, totalHeight);
+initMinimap(vp, totalHeight, register);
 
 // Capas + culling/nivel de detalle. La visibilidad combina: capa activa + en viewport + LOD.
 let activeLayers = new Set();
@@ -192,7 +195,8 @@ function refreshVisibility() {
       el.style.display = (x >= left && x <= right && detail) ? '' : 'none';
     } else if (cl.contains('event-label')) {
       const x = parseFloat(el.style.left);
-      el.style.display = (sc >= SC_EV_LABEL && x >= left && x <= right) ? '' : 'none';
+      // 'block' explícito: el CSS por defecto es display:none, así que '' no la mostraría.
+      el.style.display = (sc >= SC_EV_LABEL && x >= left && x <= right) ? 'block' : 'none';
     } else if (cl.contains('civ-label')) {
       el.style.display = sc >= SC_CIV_LABEL ? '' : 'none';
     } else {
@@ -216,9 +220,9 @@ frameActive = function () {
   vp.animateTo({ x: innerWidth / 2 - cx * scale, y: innerHeight / 2 - cy * scale, scale });
 };
 
-// Refrescar culling/LOD al desplazar o hacer zoom (throttled a un frame)
-const _vpApply = vp.apply; let _rafPend = false;
-vp.apply = () => { _vpApply(); if (!_rafPend) { _rafPend = true; requestAnimationFrame(() => { _rafPend = false; refreshVisibility(); }); } };
+// Refrescar zoom semántico/culling en cada movimiento (throttled a un frame)
+let _rafPend = false;
+register(() => { if (!_rafPend) { _rafPend = true; requestAnimationFrame(() => { _rafPend = false; refreshVisibility(); }); } });
 
 const tour = initTour(vp, byId, getActive, groupForEvent);
 initSplash(() => controls.reset(), () => tour.start());
