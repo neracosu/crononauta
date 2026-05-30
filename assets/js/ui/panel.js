@@ -49,11 +49,11 @@ export function openPanel(data) {
   panel.classList.add('open');
   panel.setAttribute('aria-hidden', 'false');
 
-  // Eventos sin texto guardado: traer resumen + imagen en vivo de Wikipedia (citando la fuente).
-  if (data.isEvent && data.source && !(data.desc && data.desc.trim())) loadWikiSummary(data.source);
+  // Eventos con fuente: imagen (y, si no hay texto curado, resumen) en vivo de Wikipedia.
+  if (data.isEvent && data.source) loadWikiSummary(data.source, !!(data.desc && data.desc.trim()));
 }
 
-async function loadWikiSummary(sourceUrl) {
+async function loadWikiSummary(sourceUrl, keepDesc) {
   try {
     const raw = sourceUrl.split('/wiki/')[1];
     if (!raw) return;
@@ -62,7 +62,7 @@ async function loadWikiSummary(sourceUrl) {
     if (!r.ok) return;
     const s = await r.json();
     const p = document.querySelector('#panel-body .pdesc');
-    if (p && s.extract) p.textContent = s.extract;
+    if (!keepDesc && p && s.extract) p.textContent = s.extract;
     if (s.thumbnail && s.thumbnail.source) {
       const hero = document.getElementById('panel-hero');
       const fb = document.getElementById('panel-fb');

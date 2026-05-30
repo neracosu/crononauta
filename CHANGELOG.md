@@ -6,6 +6,20 @@ Lo más reciente arriba.
 
 ## [Sin publicar]
 
+## [2.0.0] - 2026-05-29 — Refocus: producto enfocado y profundo
+
+### Cambiado (decisión de producto: profundidad sobre amplitud)
+- **Cortado el ruido**: eliminados los 146 eventos de Wikidata sin curar, la **vista Capas**
+  (swimlanes) y el río de densidad. Una sola vista excelente: el **Atlas**. Las capas siguen
+  como **filtro** temático en el selector.
+- **Dataset curado y ampliado a 78 eventos** (de 48): capa **Religión** de 6 a **21 hitos**
+  bíblicos (José, Conquista de Canaán, David, división del reino, exilio, Macabeos,
+  Crucifixión, destrucción del Templo…) + ciencia/tecnología/salud (escritura, Buda, Confucio,
+  Galileo, Newton, vapor, vacuna, ADN, Luna, la Web, COVID-19…).
+- **Imagen y detalle en vivo de Wikipedia** en el panel para todo evento con fuente, manteniendo
+  la descripción curada.
+- Verificado en **navegador real** (headless Chromium): 0 errores JS, 0 404, render correcto.
+
 ## [1.6.3] - 2026-05-29
 
 ### Corregido

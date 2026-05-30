@@ -1,14 +1,14 @@
 import { VERSION } from './data/version.js';
 import { loadData } from './data/load.js';
 import { REGIONS, regionById } from './data/regions.js';
-import { civLayer, LAYERS, layerById } from './data/layers.js';
+import { civLayer } from './data/layers.js';
 import { initLayers } from './ui/layers.js';
 import { CIVS } from './data/civilizations.js';
 import { EVENTS } from './data/events.js';
 import { layout, yearToX, CHART_WIDTH, TOP_OFFSET } from './core/coords.js';
 import { createViewport } from './core/viewport.js';
 import { renderTimeline } from './render/timeline.js';
-import { riverPath, connectorPath, densityRiverPath } from './render/rivers.js';
+import { riverPath, connectorPath } from './render/rivers.js';
 import { showTooltip, moveTooltip, hideTooltip } from './ui/tooltip.js';
 import { initPanel, openPanel } from './ui/panel.js';
 import { renderMarkers } from './render/markers.js';
@@ -26,22 +26,15 @@ const overlay = document.getElementById('overlay');
 // Datos desde la API (DB). Top-level await (módulo ES). Cae a estáticos si falla.
 await loadData();
 
-// Vista: 'atlas' (filas por región, default) o 'capas' (carriles por tema).
-const VISTA = new URLSearchParams(location.search).get('vista') === 'capas' ? 'capas' : 'atlas';
-const groups = VISTA === 'capas' ? LAYERS.map(l => ({ id: l.id, name: l.name.toUpperCase() })) : REGIONS;
-const keyOf = VISTA === 'capas' ? (c => civLayer(c)) : (c => c.region);
-const groupForEvent = VISTA === 'capas'
-  ? (ev => groups.find(g => g.id === ev.layer) || groups[0])
-  : (ev => regionById(ev.region));
-
-const totalHeight = layout(groups, CIVS, keyOf, VISTA === 'capas' ? 3 : 0);
+// Vista única: el Atlas geográfico (filas por región). Las capas son un filtro temático.
+const totalHeight = layout(REGIONS, CIVS);
 world.style.width = CHART_WIDTH + 'px';
 world.style.height = totalHeight + 'px';
 svg.setAttribute('width', CHART_WIDTH);
 svg.setAttribute('height', totalHeight);
 svg.setAttribute('viewBox', `0 0 ${CHART_WIDTH} ${totalHeight}`);
 
-renderTimeline(svg, overlay, groups, totalHeight);
+renderTimeline(svg, overlay, REGIONS, totalHeight);
 
 // Gradiente de volumen reutilizable
 const SVGNS = 'http://www.w3.org/2000/svg';
@@ -98,21 +91,7 @@ CIVS.forEach(civ => {
   overlay.appendChild(lab);
 });
 
-// Vista Capas: río de densidad por cada capa de eventos (las que no tienen bandas-civ)
-if (VISTA === 'capas') {
-  groups.filter(g => g.laneCount === 0).forEach(g => {
-    const years = EVENTS.filter(e => e.layer === g.id).map(e => e.year);
-    if (!years.length) return;
-    const path = document.createElementNS(SVGNS, 'path');
-    path.setAttribute('d', densityRiverPath(years, g.yStart + 48, 40));
-    path.setAttribute('fill', layerById(g.id).color);
-    path.setAttribute('class', 'layer-river');
-    path.dataset.layer = g.id;
-    svg.appendChild(path);
-  });
-}
-
-renderMarkers(overlay, groupForEvent);
+renderMarkers(overlay);
 
 // Viewport + interacción. Registro de listeners: TODO movimiento (set/zoomAt/animateTo)
 // dispara onChange → se notifica a zoom display, minimapa y zoom semántico.
@@ -211,7 +190,7 @@ frameActive = function () {
   let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
   const add = (x, y) => { if (x < minX) minX = x; if (x > maxX) maxX = x; if (y < minY) minY = y; if (y > maxY) maxY = y; };
   CIVS.forEach(c => { if (activeLayers.has(civLayer(c))) { add(yearToX(c.start), c.yCenter); add(yearToX(c.end), c.yCenter); } });
-  EVENTS.forEach(e => { if (activeLayers.has(e.layer)) { const g = groupForEvent(e); add(yearToX(e.year), (g.yStart || TOP_OFFSET) + (VISTA === 'capas' ? 48 : 0)); } });
+  EVENTS.forEach(e => { if (activeLayers.has(e.layer)) { const g = regionById(e.region); add(yearToX(e.year), g.yStart || TOP_OFFSET); } });
   if (minX === Infinity) { vp.animateTo({ x: innerWidth / 2 - yearToX(0) * 0.5, y: 60, scale: 0.5 }); return; }
   const w = Math.max(maxX - minX, 400), h = Math.max(maxY - minY, 200);
   let scale = Math.min((innerWidth - 220) / w, (innerHeight - 200) / h);
@@ -224,7 +203,7 @@ frameActive = function () {
 let _rafPend = false;
 register(() => { if (!_rafPend) { _rafPend = true; requestAnimationFrame(() => { _rafPend = false; refreshVisibility(); }); } });
 
-const tour = initTour(vp, byId, getActive, groupForEvent);
+const tour = initTour(vp, byId, getActive);
 initSplash(() => controls.reset(), () => tour.start());
 initLayers(applyLayers);
 
