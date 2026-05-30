@@ -40,9 +40,9 @@ renderTimeline(svg, overlay, REGIONS, totalHeight);
 const SVGNS = 'http://www.w3.org/2000/svg';
 const defs = document.createElementNS(SVGNS, 'defs');
 defs.innerHTML = `<linearGradient id="riverShade" x1="0" y1="0" x2="0" y2="1">
-  <stop offset="0%" stop-color="rgba(255,255,255,0.28)"/>
-  <stop offset="45%" stop-color="rgba(255,255,255,0)"/>
-  <stop offset="100%" stop-color="rgba(0,0,0,0.16)"/>
+  <stop offset="0%" stop-color="rgba(255,255,255,0.42)"/>
+  <stop offset="38%" stop-color="rgba(255,255,255,0.04)"/>
+  <stop offset="100%" stop-color="rgba(0,0,0,0.24)"/>
 </linearGradient>`;
 svg.appendChild(defs);
 
@@ -66,6 +66,9 @@ CIVS.forEach(civ => {
   const fill = document.createElementNS(SVGNS, 'path');
   fill.setAttribute('d', d);
   fill.setAttribute('fill', civ.color);
+  fill.setAttribute('stroke', 'rgba(40,30,20,0.35)');
+  fill.setAttribute('stroke-width', '1');
+  fill.setAttribute('vector-effect', 'non-scaling-stroke'); // borde nítido a cualquier zoom
   fill.setAttribute('class', 'river');
   fill.dataset.id = civ.id;
   fill.dataset.layer = lyr;
@@ -187,15 +190,15 @@ function applyLayers(active) { activeLayers = active; refreshVisibility(); }
 
 // Encuadra el contenido de las capas activas (evita iniciar en un espacio en blanco).
 frameActive = function () {
-  let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
-  const add = (x, y) => { if (x < minX) minX = x; if (x > maxX) maxX = x; if (y < minY) minY = y; if (y > maxY) maxY = y; };
-  CIVS.forEach(c => { if (activeLayers.has(civLayer(c))) { add(yearToX(c.start), c.yCenter); add(yearToX(c.end), c.yCenter); } });
-  EVENTS.forEach(e => { if (activeLayers.has(e.layer)) { const g = regionById(e.region); add(yearToX(e.year), g.yStart || TOP_OFFSET); } });
-  if (minX === Infinity) { vp.animateTo({ x: innerWidth / 2 - yearToX(0) * 0.5, y: 60, scale: 0.5 }); return; }
-  const w = Math.max(maxX - minX, 400), h = Math.max(maxY - minY, 200);
-  let scale = Math.min((innerWidth - 220) / w, (innerHeight - 200) / h);
-  scale = Math.max(0.16, Math.min(1.2, scale));
-  const cx = minX + w / 2, cy = minY + h / 2;
+  // Aterriza a un zoom LEGIBLE centrado en el contenido (no la línea completa en miniatura).
+  let minY = Infinity, maxY = -Infinity, sumX = 0, n = 0;
+  const addY = y => { if (y < minY) minY = y; if (y > maxY) maxY = y; };
+  CIVS.forEach(c => { if (activeLayers.has(civLayer(c))) { addY(c.yCenter); sumX += (yearToX(c.start) + yearToX(c.end)) / 2; n++; } });
+  EVENTS.forEach(e => { if (activeLayers.has(e.layer)) { const g = regionById(e.region); addY(g.yStart || TOP_OFFSET); sumX += yearToX(e.year); n++; } });
+  if (!n) { vp.animateTo({ x: innerWidth / 2 - yearToX(0) * 0.6, y: 60, scale: 0.6 }); return; }
+  const cx = sumX / n, cy = (minY + maxY) / 2, h = Math.max(maxY - minY, 300);
+  let scale = (innerHeight - 200) / h;        // cabe el alto del contenido…
+  scale = Math.max(0.5, Math.min(1.1, scale)); // …pero con piso legible 0.5
   vp.animateTo({ x: innerWidth / 2 - cx * scale, y: innerHeight / 2 - cy * scale, scale });
 };
 

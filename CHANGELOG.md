@@ -6,6 +6,14 @@ Lo más reciente arriba.
 
 ## [Sin publicar]
 
+## [2.1.0] - 2026-05-29
+
+### Cambiado (visual, iterado con capturas reales)
+- **Entrada a un zoom legible (~50%) centrado en el contenido**, no la línea completa en
+  miniatura (antes entrabas al 16% con líneas finas sobre vacío).
+- **Ríos con volumen y borde nítido**: gradiente reforzado + contorno `non-scaling-stroke`.
+  Ahora se leen como cintas afiladas que fluyen, no como barras planas.
+
 ## [2.0.0] - 2026-05-29 — Refocus: producto enfocado y profundo
 
 ### Cambiado (decisión de producto: profundidad sobre amplitud)
