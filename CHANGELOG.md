@@ -6,6 +6,14 @@ Lo más reciente arriba.
 
 ## [Sin publicar]
 
+## [1.6.0] - 2026-05-29
+
+### Añadido
+- **Zoom semántico estilo Google Maps**: alejado se ve el panorama (ríos + eras + hitos
+  dorados); al **acercar** aparecen, por niveles, los nombres de civilización → todos los
+  marcadores → las **etiquetas con el nombre de cada evento**. El detalle se revela al
+  maximizar, no encogiendo el contenido.
+
 ## [1.5.2] - 2026-05-29
 
 ### Corregido

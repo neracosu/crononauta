@@ -24,5 +24,14 @@ export function renderMarkers(overlay, groupForEvent = ev => regionById(ev.regio
     m.addEventListener('mouseleave', hideTooltip);
     m.addEventListener('click', () => openPanel(data));
     overlay.appendChild(m);
+
+    // Etiqueta del evento: aparece al hacer zoom profundo (detalle "al maximizar")
+    const lab = document.createElement('div');
+    lab.className = 'event-label';
+    lab.dataset.layer = ev.layer;
+    lab.style.left = yearToX(ev.year) + 'px';
+    lab.style.top = (region.yStart - 10 - (k % 5) * 8 - 13) + 'px';
+    lab.textContent = ev.name;
+    overlay.appendChild(lab);
   });
 }

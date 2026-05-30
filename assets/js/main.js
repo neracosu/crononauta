@@ -173,20 +173,29 @@ initMinimap(vp, totalHeight);
 // Capas + culling/nivel de detalle. La visibilidad combina: capa activa + en viewport + LOD.
 let activeLayers = new Set();
 const getActive = () => activeLayers;
-const LOD_SCALE = 0.7; // por debajo de este zoom solo se ven los hitos dorados
+// Zoom semántico (estilo Google Maps): alejado = panorama (ríos/eras/hitos dorados);
+// al acercar aparecen, por niveles: nombres de civilización → todos los marcadores → nombres de evento.
+const SC_CIV_LABEL = 0.45;
+const SC_MARKERS = 0.85;
+const SC_EV_LABEL = 1.8;
 function refreshVisibility() {
   const sc = vp.state.scale, px = vp.state.x;
   const left = -px / sc - 200, right = (innerWidth - px) / sc + 200;
-  // Solo aplicamos LOD (ocultar no-dorados al alejar) si hay bandas que den panorama.
   const lodOn = activeLayers.has('civilizaciones') || activeLayers.has('religion');
   overlay.parentNode.querySelectorAll('[data-layer]').forEach(el => {
-    const layerOn = activeLayers.has(el.dataset.layer);
-    if (el.classList.contains('event-marker')) {
+    if (!activeLayers.has(el.dataset.layer)) { el.style.display = 'none'; return; }
+    const cl = el.classList;
+    if (cl.contains('event-marker')) {
       const x = parseFloat(el.style.left);
-      const ok = layerOn && x >= left && x <= right && (!lodOn || el.classList.contains('golden') || sc >= LOD_SCALE);
-      el.style.display = ok ? '' : 'none';
+      const detail = !lodOn || cl.contains('golden') || sc >= SC_MARKERS;
+      el.style.display = (x >= left && x <= right && detail) ? '' : 'none';
+    } else if (cl.contains('event-label')) {
+      const x = parseFloat(el.style.left);
+      el.style.display = (sc >= SC_EV_LABEL && x >= left && x <= right) ? '' : 'none';
+    } else if (cl.contains('civ-label')) {
+      el.style.display = sc >= SC_CIV_LABEL ? '' : 'none';
     } else {
-      el.style.display = layerOn ? '' : 'none';
+      el.style.display = ''; // ríos, conectores, sombras = panorama (siempre visible si la capa está activa)
     }
   });
 }
