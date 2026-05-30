@@ -85,4 +85,37 @@ export const EVENTS = [
   { year:1969, name:'Llegada a la Luna', desc:'El Apolo 11 lleva al ser humano a la Luna por primera vez.', region:5, layer:'tecnologia', golden:true, source:'https://es.wikipedia.org/wiki/Apolo_11' },
   { year:1989, name:'La World Wide Web', desc:'Tim Berners-Lee inventa la Web; nace internet tal como lo conocemos.', region:1, layer:'tecnologia', golden:true, source:'https://es.wikipedia.org/wiki/World_Wide_Web' },
   { year:2020, name:'Pandemia de COVID-19', desc:'Una pandemia global redefine la salud, la economía y la vida cotidiana.', region:2, layer:'salud', golden:true, source:'https://es.wikipedia.org/wiki/Pandemia_de_COVID-19' },
+
+  // ── Política y sociedad ──
+  { year:-594, name:'Reformas de Solón', desc:'Solón sienta las bases de la democracia ateniense.', region:1, layer:'politica', source:'https://es.wikipedia.org/wiki/Solón' },
+  { year:-27, name:'Augusto, primer emperador', desc:'Octavio Augusto inicia el Imperio Romano y la Pax Romana.', region:1, layer:'politica', golden:true, source:'https://es.wikipedia.org/wiki/Augusto' },
+  { year:330, name:'Fundación de Constantinopla', desc:'Constantino traslada la capital del Imperio a Bizancio.', region:1, layer:'politica', source:'https://es.wikipedia.org/wiki/Constantinopla' },
+  { year:1810, name:'Independencias hispanoamericanas', desc:'Comienza la emancipación de las colonias españolas en América.', region:4, layer:'politica', golden:true, source:'https://es.wikipedia.org/wiki/Independencia_hispanoamericana' },
+  { year:1811, name:'Independencia de Venezuela', desc:'Venezuela declara su independencia de España.', region:4, layer:'politica', source:'https://es.wikipedia.org/wiki/Independencia_de_Venezuela' },
+  { year:1819, name:'Simón Bolívar y la Gran Colombia', desc:'Bolívar libera buena parte de Sudamérica y funda la Gran Colombia.', region:4, layer:'politica', golden:true, source:'https://es.wikipedia.org/wiki/Simón_Bolívar' },
+  { year:1914, name:'Primera Guerra Mundial', desc:'El primer conflicto industrial global.', region:1, layer:'guerras', golden:true, source:'https://es.wikipedia.org/wiki/Primera_Guerra_Mundial' },
+  { year:1917, name:'Revolución Rusa', desc:'Cae el zarismo; nace la Unión Soviética.', region:1, layer:'politica', source:'https://es.wikipedia.org/wiki/Revolución_rusa' },
+  { year:1939, name:'Segunda Guerra Mundial', desc:'El conflicto más mortífero de la historia.', region:1, layer:'guerras', golden:true, source:'https://es.wikipedia.org/wiki/Segunda_Guerra_Mundial' },
+  { year:1945, name:'Bomba atómica', desc:'Hiroshima y Nagasaki inauguran la era nuclear.', region:2, layer:'guerras', source:'https://es.wikipedia.org/wiki/Bombardeos_atómicos_sobre_Hiroshima_y_Nagasaki' },
+  { year:1945, name:'Naciones Unidas', desc:'Se funda la ONU para preservar la paz mundial.', region:5, layer:'politica', source:'https://es.wikipedia.org/wiki/Organización_de_las_Naciones_Unidas' },
+  { year:1989, name:'Caída del Muro de Berlín', desc:'Fin de la Guerra Fría y de la división de Europa.', region:1, layer:'politica', golden:true, source:'https://es.wikipedia.org/wiki/Caída_del_muro_de_Berlín' },
+  { year:1821, name:'Batalla de Carabobo', desc:'Victoria decisiva que sella la independencia de Venezuela.', region:4, layer:'guerras', source:'https://es.wikipedia.org/wiki/Batalla_de_Carabobo' },
+
+  // ── Arte y cultura ──
+  { year:-750, name:'Homero y la Ilíada', desc:'Las epopeyas homéricas, cimiento de la literatura occidental.', region:1, layer:'cultura', source:'https://es.wikipedia.org/wiki/Homero' },
+  { year:80, name:'El Coliseo de Roma', desc:'El anfiteatro Flavio, obra maestra de la ingeniería romana.', region:1, layer:'cultura', source:'https://es.wikipedia.org/wiki/Coliseo' },
+  { year:1320, name:'La Divina Comedia', desc:'Dante culmina el poema cumbre de la Edad Media.', region:1, layer:'cultura', source:'https://es.wikipedia.org/wiki/Divina_comedia' },
+  { year:1512, name:'La Capilla Sixtina', desc:'Miguel Ángel termina la bóveda; cumbre del Renacimiento.', region:1, layer:'cultura', source:'https://es.wikipedia.org/wiki/Capilla_Sixtina' },
+  { year:1605, name:'Don Quijote de la Mancha', desc:'Cervantes publica la primera novela moderna.', region:1, layer:'cultura', golden:true, source:'https://es.wikipedia.org/wiki/Don_Quijote_de_la_Mancha' },
+  { year:1824, name:'Novena Sinfonía de Beethoven', desc:'El "Himno de la Alegría" corona la música romántica.', region:1, layer:'cultura', source:'https://es.wikipedia.org/wiki/Sinfonía_n.º_9_(Beethoven)' },
+
+  // ── Exploración y geografía ──
+  { year:1498, name:'Vasco da Gama llega a la India', desc:'Se abre la ruta marítima de Europa a Asia.', region:1, layer:'exploracion', source:'https://es.wikipedia.org/wiki/Vasco_da_Gama' },
+  { year:1522, name:'Primera vuelta al mundo', desc:'La expedición de Magallanes-Elcano circunnavega la Tierra.', region:1, layer:'exploracion', golden:true, source:'https://es.wikipedia.org/wiki/Expedición_de_Magallanes-Elcano' },
+
+  // ── Ciencia, tecnología y salud ──
+  { year:1543, name:'Heliocentrismo de Copérnico', desc:'Copérnico pone al Sol en el centro; revolución científica.', region:1, layer:'ciencia', golden:true, source:'https://es.wikipedia.org/wiki/Nicolás_Copérnico' },
+  { year:1903, name:'El primer avión', desc:'Los hermanos Wright logran el primer vuelo motorizado.', region:5, layer:'tecnologia', golden:true, source:'https://es.wikipedia.org/wiki/Hermanos_Wright' },
+  { year:1921, name:'Descubrimiento de la insulina', desc:'Banting y Best hacen tratable la diabetes.', region:5, layer:'salud', source:'https://es.wikipedia.org/wiki/Insulina' },
+  { year:1946, name:'La primera computadora (ENIAC)', desc:'Nace la computación electrónica de propósito general.', region:5, layer:'tecnologia', source:'https://es.wikipedia.org/wiki/ENIAC' },
 ];

@@ -6,6 +6,17 @@ Lo más reciente arriba.
 
 ## [Sin publicar]
 
+## [2.2.0] - 2026-05-29
+
+### Añadido (más datos curados, con fuente Wikipedia)
+- Dataset de 78 a **103 eventos** (55 con fuente → imagen en vivo). Capas más densas:
+  política 26, religión 21, guerras 16, cultura 11, tecnología 10, ciencia 9, salud 6, exploración 3.
+- **Historia latinoamericana** (región Américas de 1 a 8 hitos): independencias hispanoamericanas,
+  Independencia de Venezuela, Simón Bolívar y la Gran Colombia, Batalla de Carabobo.
+- Siglo XX: I y II Guerra Mundial, Revolución Rusa, bomba atómica, ONU, caída del Muro de Berlín;
+  cultura (Homero, Coliseo, Divina Comedia, Capilla Sixtina, Don Quijote, Beethoven);
+  exploración (Vasco da Gama, vuelta al mundo); ciencia (Copérnico, avión, insulina, ENIAC).
+
 ## [2.1.0] - 2026-05-29
 
 ### Cambiado (visual, iterado con capturas reales)
