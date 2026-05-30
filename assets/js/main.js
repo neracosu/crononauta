@@ -1,7 +1,7 @@
 import { VERSION } from './data/version.js';
 import { loadData } from './data/load.js';
-import { REGIONS } from './data/regions.js';
-import { civLayer } from './data/layers.js';
+import { REGIONS, regionById } from './data/regions.js';
+import { civLayer, LAYERS } from './data/layers.js';
 import { initLayers } from './ui/layers.js';
 import { CIVS } from './data/civilizations.js';
 import { layout, yearToX, CHART_WIDTH } from './core/coords.js';
@@ -25,14 +25,22 @@ const overlay = document.getElementById('overlay');
 // Datos desde la API (DB). Top-level await (módulo ES). Cae a estáticos si falla.
 await loadData();
 
-const totalHeight = layout(REGIONS, CIVS);
+// Vista: 'atlas' (filas por región, default) o 'capas' (carriles por tema).
+const VISTA = new URLSearchParams(location.search).get('vista') === 'capas' ? 'capas' : 'atlas';
+const groups = VISTA === 'capas' ? LAYERS.map(l => ({ id: l.id, name: l.name.toUpperCase() })) : REGIONS;
+const keyOf = VISTA === 'capas' ? (c => civLayer(c)) : (c => c.region);
+const groupForEvent = VISTA === 'capas'
+  ? (ev => groups.find(g => g.id === ev.layer) || groups[0])
+  : (ev => regionById(ev.region));
+
+const totalHeight = layout(groups, CIVS, keyOf, VISTA === 'capas' ? 3 : 0);
 world.style.width = CHART_WIDTH + 'px';
 world.style.height = totalHeight + 'px';
 svg.setAttribute('width', CHART_WIDTH);
 svg.setAttribute('height', totalHeight);
 svg.setAttribute('viewBox', `0 0 ${CHART_WIDTH} ${totalHeight}`);
 
-renderTimeline(svg, overlay, REGIONS, totalHeight);
+renderTimeline(svg, overlay, groups, totalHeight);
 
 // Gradiente de volumen reutilizable
 const SVGNS = 'http://www.w3.org/2000/svg';
@@ -89,7 +97,7 @@ CIVS.forEach(civ => {
   overlay.appendChild(lab);
 });
 
-renderMarkers(overlay);
+renderMarkers(overlay, groupForEvent);
 
 // Viewport + interacción
 const vp = createViewport(world);
@@ -171,7 +179,7 @@ function applyLayers(active) { activeLayers = active; refreshVisibility(); }
 const _vpApply = vp.apply; let _rafPend = false;
 vp.apply = () => { _vpApply(); if (!_rafPend) { _rafPend = true; requestAnimationFrame(() => { _rafPend = false; refreshVisibility(); }); } };
 
-const tour = initTour(vp, byId, getActive);
+const tour = initTour(vp, byId, getActive, groupForEvent);
 initSplash(() => controls.reset(), () => tour.start());
 initLayers(applyLayers);
 

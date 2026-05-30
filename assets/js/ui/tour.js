@@ -4,15 +4,16 @@ import { LAYERS } from '../data/layers.js';
 import { regionById } from '../data/regions.js';
 import { yearToX } from '../core/coords.js';
 
-// Resuelve el punto de mundo (x,y) a enfocar para un hito.
-function focusPoint(stop, byId) {
+// Resuelve el punto de mundo (x,y) a enfocar para un hito (consciente de la vista activa).
+function focusPoint(stop, byId, groupForEvent) {
   const f = stop.focus;
-  if (f.civId) { const c = byId[f.civId]; return { x: (yearToX(c.start)+yearToX(c.end))/2, y: c.yCenter }; }
+  if (f.civId) { const c = byId[f.civId]; if (c) return { x: (yearToX(c.start)+yearToX(c.end))/2, y: c.yCenter }; }
   if (f.eventName) {
-    const ev = EVENTS.find(e => e.name === f.eventName); if (ev) { const r = regionById(ev.region); return { x: yearToX(ev.year), y: r.yStart + 40 }; }
+    const ev = EVENTS.find(e => e.name === f.eventName);
+    if (ev) { const g = groupForEvent(ev); return { x: yearToX(ev.year), y: (g.yStart || 300) + 40 }; }
   }
   const r = regionById(f.region);
-  return { x: yearToX(f.year), y: r.yStart + 60 };
+  return { x: yearToX(f.year), y: (r.yStart || 300) + 60 };
 }
 
 // Toma n elementos repartidos uniformemente.
@@ -38,7 +39,7 @@ function stopsFor(active) {
   }));
 }
 
-export function initTour(vp, byId, getActive) {
+export function initTour(vp, byId, getActive, groupForEvent = ev => regionById(ev.region)) {
   let active = false, idx = 0, stops = TOUR;
   const rail = document.getElementById('tour-rail');
   const card = document.getElementById('tour-card');
@@ -46,7 +47,7 @@ export function initTour(vp, byId, getActive) {
   function goto(i) {
     idx = Math.max(0, Math.min(stops.length - 1, i));
     const stop = stops[idx];
-    const p = focusPoint(stop, byId);
+    const p = focusPoint(stop, byId, groupForEvent);
     vp.animateTo({ x: innerWidth/2 - p.x * stop.zoom, y: innerHeight/2 - p.y * stop.zoom, scale: stop.zoom });
     card.querySelector('.tour-title').textContent = stop.title;
     card.querySelector('.tour-caption').textContent = stop.caption;

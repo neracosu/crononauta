@@ -27,6 +27,11 @@ export function initControls(vp, { byId, openPanel, totalHeight, onTour }) {
     if (act === 'zoomout') vp.zoomAt(1 / 1.3, cx, cy);
     if (act === 'reset') reset();
     if (act === 'tour') onTour && onTour();
+    if (act === 'vista') {
+      const p = new URLSearchParams(location.search);
+      p.set('vista', p.get('vista') === 'capas' ? 'atlas' : 'capas');
+      location.search = p.toString();
+    }
   });
 
   document.addEventListener('keydown', e => {

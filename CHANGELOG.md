@@ -6,6 +6,13 @@ Lo más reciente arriba.
 
 ## [Sin publicar]
 
+## [1.5.0] - 2026-05-29
+
+### Añadido (Fase 3 — doble modo)
+- **Vista "Capas"** (swimlanes por tema) además de la vista **"Atlas"** (filas por región).
+  Botón conmutador ⇄ en los controles; `layout()` agrupa por región o por capa según `?vista=`.
+  Con esto, el rediseño v2 multicapa queda completo (Fases 0–4).
+
 ## [1.4.0] - 2026-05-29
 
 ### Añadido

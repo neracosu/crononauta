@@ -5,12 +5,12 @@ import { layerById } from '../data/layers.js';
 import { showTooltip, moveTooltip, hideTooltip } from '../ui/tooltip.js';
 import { openPanel } from '../ui/panel.js';
 
-export function renderMarkers(overlay) {
-  const tally = {}; // contador por región para escalonar verticalmente y evitar amontonamiento
+export function renderMarkers(overlay, groupForEvent = ev => regionById(ev.region)) {
+  const tally = {}; // contador por grupo para escalonar verticalmente y evitar amontonamiento
   EVENTS.forEach(ev => {
-    const region = regionById(ev.region);
+    const region = groupForEvent(ev);
     const color = layerById(ev.layer).color;
-    const k = (tally[ev.region] = (tally[ev.region] || 0) + 1);
+    const k = (tally[region.id] = (tally[region.id] || 0) + 1);
     const m = document.createElement('div');
     m.className = 'event-marker' + (ev.golden ? ' golden' : '');
     m.dataset.layer = ev.layer;

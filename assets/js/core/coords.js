@@ -23,19 +23,21 @@ export function bandPeak(tier) {
   return tier === 1 ? 26 : tier === 2 ? 19 : 13;
 }
 
-// Asigna a cada región yStart y a cada civ su carril (lane) y yCenter.
+// Asigna a cada grupo (región o capa) su yStart y a cada civ su carril y yCenter.
+// keyOf(civ) decide a qué grupo pertenece cada civ (default: por región).
+// minLanes da altura mínima a grupos sin civs (para vista Capas con filas de eventos).
 // Devuelve la altura total del lienzo.
-export function layout(regions, civs) {
+export function layout(groups, civs, keyOf = c => c.region, minLanes = 0) {
   let y = TOP_OFFSET;
-  for (const region of regions) {
-    region.yStart = y;
-    const inRegion = civs.filter(c => c.region === region.id);
-    inRegion.forEach((c, i) => {
+  for (const g of groups) {
+    g.yStart = y;
+    const inG = civs.filter(c => keyOf(c) === g.id);
+    inG.forEach((c, i) => {
       c.lane = i;
-      c.yCenter = region.yStart + i * LANE_PITCH + LANE_PITCH / 2;
+      c.yCenter = g.yStart + i * LANE_PITCH + LANE_PITCH / 2;
     });
-    region.laneCount = inRegion.length;
-    y += inRegion.length * LANE_PITCH + REGION_GAP;
+    g.laneCount = inG.length;
+    y += Math.max(inG.length, minLanes) * LANE_PITCH + REGION_GAP;
   }
   return y + 40;
 }
